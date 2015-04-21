@@ -4,6 +4,8 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -16,6 +18,7 @@ public class Attribute {
     @Id private Integer id;
     private String name;
     private String type;
+    @Enumerated(EnumType.STRING) private Scope scope;
 
     @ManyToOne @JoinColumn(name = "object_id") private Object object;
 
@@ -47,6 +50,14 @@ public class Attribute {
         this.type = type;
     }
 
+    public Scope getScope() {
+        return scope;
+    }
+
+    public void setScope(Scope scope) {
+        this.scope = scope;
+    }
+
     public String getDefaultValue() {
         return defaultValue;
     }
@@ -73,7 +84,7 @@ public class Attribute {
 
     @Override
     public String toString() {
-        return String.format("[Attribute '%s', type=%s, default value = '%s']",
-                name, type, defaultValue);
+        return String.format("[Attribute %c'%s', type=%s, default value = '%s']",
+                scope.getSymbol(), name, type, defaultValue);
     }
 }

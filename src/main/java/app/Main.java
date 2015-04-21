@@ -13,38 +13,43 @@ import org.hibernate.Session;
 
 public class Main {
     public static void main(String[] args) {
-        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-        session.beginTransaction();
+        try {
+            Session session = HibernateUtil
+                    .getSessionFactory()
+                    .getCurrentSession();
+            session.beginTransaction();
 
-        List<Package> packages = session.createQuery("FROM Package").list();
-        for (Package p : packages) {
-            System.out.println(p);
-            for (Object o : p.getObjects()) {
-                System.out.println("\t" + o);
+            List<Package> packages = session.createQuery("FROM Package").list();
+            for (Package p : packages) {
+                System.out.println(p);
+                for (Object o : p.getObjects()) {
+                    System.out.println("\t" + o);
 
-                for (Attribute a : o.getAttributes()) {
-                    System.out.println("\t\t" + a);
+                    for (Attribute a : o.getAttributes()) {
+                        System.out.println("\t\t" + a);
 
-                    for (AttributeTag tag : a.getTaggedValues()) {
-                        System.out.println("\t\t\t" + tag);
+                        for (AttributeTag tag : a.getTaggedValues()) {
+                            System.out.println("\t\t\t" + tag);
+                        }
+                    }
+
+                    for (ObjectProperty op : o.getTaggedValues()) {
+                        System.out.println("\t\t" + op);
+                    }
+
+                    for (Connector c : o.getOutgoingConnectors()) {
+                        System.out.println("\t\t" + c);
+                    }
+                    System.out.println("\t---");
+                    for (Connector c : o.getIncomingConnectors()) {
+                        System.out.println("\t\t" + c);
                     }
                 }
-
-                for (ObjectProperty op : o.getTaggedValues()) {
-                    System.out.println("\t\t" + op);
-                }
-
-                for (Connector c : o.getOutgoingConnectors()) {
-                    System.out.println("\t\t" + c);
-                }
-                System.out.println("\t---");
-                for (Connector c : o.getIncomingConnectors()) {
-                    System.out.println("\t\t" + c);
-                }
             }
-        }
 
-        session.getTransaction().commit();
-        HibernateUtil.getSessionFactory().close();
+            session.getTransaction().commit();
+        } finally {
+            HibernateUtil.getSessionFactory().close();
+        }
     }
 }

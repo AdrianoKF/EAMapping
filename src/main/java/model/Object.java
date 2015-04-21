@@ -4,6 +4,8 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -16,13 +18,15 @@ public class Object {
     @Id @Column(name = "object_id") private Integer objectId;
     @ManyToOne @JoinColumn(name = "package_id") private Package pkg;
     private String name;
+    @Enumerated(EnumType.STRING) private Scope scope;
     @Column(name = "object_type") private String objectType;
+    @Column(name = "abstract") private boolean isAbstract;
 
     @OneToMany(mappedBy = "object") private Set<Attribute> attributes;
     @OneToMany(mappedBy = "object") private Set<ObjectProperty> taggedValues;
 
-    @OneToMany(mappedBy = "startObject") private Set<Connector> outgoingConnectors;
-    @OneToMany(mappedBy = "endObject") private Set<Connector> incomingConnectors;
+    @OneToMany(mappedBy = "sourceObject") private Set<Connector> outgoingConnectors;
+    @OneToMany(mappedBy = "destObject") private Set<Connector> incomingConnectors;
 
     public Integer getObjectId() {
         return objectId;
@@ -48,12 +52,28 @@ public class Object {
         this.name = name;
     }
 
+    public Scope getScope() {
+        return scope;
+    }
+
+    public void setScope(Scope scope) {
+        this.scope = scope;
+    }
+
     public String getObjectType() {
         return objectType;
     }
 
     public void setObjectType(String objectType) {
         this.objectType = objectType;
+    }
+
+    public boolean isAbstract() {
+        return isAbstract;
+    }
+
+    public void setAbstract(boolean isAbstract) {
+        this.isAbstract = isAbstract;
     }
 
     public Set<Attribute> getAttributes() {
@@ -90,6 +110,6 @@ public class Object {
 
     @Override
     public String toString() {
-        return String.format("[Object '%s', type=%s]", name, objectType);
+        return String.format("[Object %c'%s', type=%s]", scope.getSymbol(), name, objectType);
     }
 }
