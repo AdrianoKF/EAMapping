@@ -5,6 +5,7 @@ import java.util.List;
 import model.Attribute;
 import model.AttributeTag;
 import model.Connector;
+import model.Diagram;
 import model.Object;
 import model.ObjectProperty;
 import model.Package;
@@ -45,6 +46,19 @@ public class Main {
                         System.out.println("\t\t" + c);
                     }
                 }
+                System.out.println();
+            }
+
+            List<Diagram> diagrams = session.createQuery("FROM Diagram").list();
+            for (Diagram d : diagrams) {
+                System.out.println(d);
+                for (Object o : d.getObjects()) {
+                    System.out.println("\t" + o);
+                }
+                for (Connector c : d.getConnectors()) {
+                    System.out.println("\t" + c);
+                }
+                System.out.println();
             }
 
             session.getTransaction().commit();

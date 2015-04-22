@@ -15,5 +15,7 @@
 		<mapping class="model.AttributeTag" />
 		<mapping class="model.ObjectProperty" />
 		<mapping class="model.Connector" />
+		<mapping class="model.Diagram" />
+		<mapping class="model.DiagramObject" />
 	</session-factory>
 </hibernate-configuration>

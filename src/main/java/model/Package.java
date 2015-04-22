@@ -21,6 +21,7 @@ public class Package {
     private String name;
     private String version;
     private String notes;
+    private String namespace;
 
     @ManyToOne @NotFound(action = NotFoundAction.IGNORE) @JoinColumn(name = "parent_id") private Package parent;
     @OneToMany(mappedBy = "pkg") private Set<Object> objects;
@@ -57,6 +58,14 @@ public class Package {
         this.notes = notes;
     }
 
+    public String getNamespace() {
+        return namespace;
+    }
+
+    public void setNamespace(String namespace) {
+        this.namespace = namespace;
+    }
+
     public Package getParent() {
         return parent;
     }
@@ -75,24 +84,6 @@ public class Package {
 
     @Override
     public String toString() {
-        final StringBuilder builder = new StringBuilder("[Package '");
-        builder.append(name);
-        builder.append("', ID=");
-        builder.append(packageId);
-        builder.append("', version=");
-        builder.append(version);
-        builder.append("]");
-
-        if (parent != null) {
-            builder.append("\n\tParent: ");
-            builder.append(parent.toString());
-        }
-
-        if (notes != null) {
-            builder.append("\n\tNotes: ");
-            builder.append(notes.toString());
-        }
-
-        return builder.toString();
+        return String.format("[Package '%s', version=%s]", name, version);
     }
 }
