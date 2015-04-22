@@ -28,6 +28,8 @@ public class Object {
     @OneToMany(mappedBy = "sourceObject") private Set<Connector> outgoingConnectors;
     @OneToMany(mappedBy = "destObject") private Set<Connector> incomingConnectors;
 
+    @OneToMany(mappedBy = "object") private Set<Operation> operations;
+
     public Integer getObjectId() {
         return objectId;
     }
@@ -106,6 +108,14 @@ public class Object {
 
     public void setIncomingConnectors(Set<Connector> incomingConnectors) {
         this.incomingConnectors = incomingConnectors;
+    }
+
+    public Set<Operation> getOperations() {
+        return operations;
+    }
+
+    public void setOperations(Set<Operation> operations) {
+        this.operations = operations;
     }
 
     @Override

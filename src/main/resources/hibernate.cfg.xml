@@ -15,6 +15,8 @@
 		<mapping class="model.AttributeTag" />
 		<mapping class="model.ObjectProperty" />
 		<mapping class="model.Connector" />
+		<mapping class="model.Operation" />
+		<mapping class="model.OperationParameter" />
 		<mapping class="model.Diagram" />
 		<mapping class="model.DiagramObject" />
 	</session-factory>

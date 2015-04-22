@@ -8,6 +8,8 @@ import model.Connector;
 import model.Diagram;
 import model.Object;
 import model.ObjectProperty;
+import model.Operation;
+import model.OperationParameter;
 import model.Package;
 
 import org.hibernate.Session;
@@ -25,6 +27,14 @@ public class Main {
                 System.out.println(p);
                 for (Object o : p.getObjects()) {
                     System.out.println("\t" + o);
+
+                    for (Operation op : o.getOperations()) {
+                        System.out.println("\t\t" + op);
+                        for (OperationParameter param : op.getParameters()) {
+                            System.out.println("\t\t\t" + param);
+                        }
+                        System.out.println();
+                    }
 
                     for (Attribute a : o.getAttributes()) {
                         System.out.println("\t\t" + a);
