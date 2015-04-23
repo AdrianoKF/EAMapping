@@ -33,6 +33,11 @@ public class Main {
                         for (OperationParameter param : op.getParameters()) {
                             System.out.println("\t\t\t" + param);
                         }
+
+                        if (op.getBehavior() != null && !op.getBehavior().isEmpty()) {
+                            System.out.printf("\t\t\t{\n%s\n}\n", op.getBehavior());
+                        }
+
                         System.out.println();
                     }
 
