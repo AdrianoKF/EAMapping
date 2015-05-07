@@ -1,6 +1,8 @@
 package model;
 
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -118,8 +120,17 @@ public class Object {
         this.operations = operations;
     }
 
+    public Map<String, String> getTaggedValuesMap() {
+        final Map<String, String> result = new TreeMap<String, String>();
+        for (ObjectProperty prop : taggedValues) {
+            result.put(prop.getProperty(), prop.getValue());
+        }
+        return result;
+    }
+
     @Override
     public String toString() {
-        return String.format("[Object %c'%s', type=%s]", scope.getSymbol(), name, objectType);
+        return String.format("[Object %c'%s', type=%s]", scope.getSymbol(),
+                name, objectType);
     }
 }
