@@ -1,7 +1,5 @@
 package app;
 
-import java.util.List;
-
 import model.Attribute;
 import model.AttributeTag;
 import model.Connector;
@@ -12,10 +10,11 @@ import model.Operation;
 import model.OperationParameter;
 import model.Package;
 
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
+import dao.DiagramRepository;
 import dao.ObjectRepository;
+import dao.PackageRepository;
 
 public class Main {
     public static void main(String[] args) {
@@ -37,12 +36,8 @@ public class Main {
         }
     }
 
-    private static void listAllObjects() {
-        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-        session.beginTransaction();
-
-        List<Package> packages = session.createQuery("FROM Package").list();
-        for (Package p : packages) {
+    private static void printAllObjects() {
+        for (Package p : new PackageRepository().getAll()) {
             System.out.println(p);
             for (Object o : p.getObjects()) {
                 System.out.println("\t" + o);
@@ -83,8 +78,7 @@ public class Main {
             System.out.println();
         }
 
-        List<Diagram> diagrams = session.createQuery("FROM Diagram").list();
-        for (Diagram d : diagrams) {
+        for (Diagram d : new DiagramRepository().getAll()) {
             System.out.println(d);
             for (Object o : d.getObjects()) {
                 System.out.println("\t" + o);
@@ -94,7 +88,5 @@ public class Main {
             }
             System.out.println();
         }
-
-        session.getTransaction().commit();
     }
 }
