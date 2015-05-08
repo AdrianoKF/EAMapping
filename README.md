@@ -1,5 +1,5 @@
 # EAMapping [![Build Status](https://travis-ci.org/AdrianoKF/EAMapping.svg?branch=master)](https://travis-ci.org/AdrianoKF/EAMapping)
-This projects aim to provide a simple way of accessing Enterprise Architect projects through a Java API.
+This project aims to provide a simple way of accessing Enterprise Architect projects through a Java API.
 
 Internally, the Hibernate object-relational mapping framework is used to provide access to the persisted EA project.
 
