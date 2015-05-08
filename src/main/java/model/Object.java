@@ -14,6 +14,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import model.datatypes.Scope;
+
 @Entity
 @Table(name = "t_object")
 public class Object {
@@ -126,6 +128,70 @@ public class Object {
             result.put(prop.getProperty(), prop.getValue());
         }
         return result;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + (isAbstract ? 1231 : 1237);
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        result = prime * result
+                + ((objectId == null) ? 0 : objectId.hashCode());
+        result = prime * result
+                + ((objectType == null) ? 0 : objectType.hashCode());
+        result = prime * result + ((pkg == null) ? 0 : pkg.hashCode());
+        result = prime * result + ((scope == null) ? 0 : scope.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(java.lang.Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (!(obj instanceof Object)) {
+            return false;
+        }
+        Object other = (Object) obj;
+        if (isAbstract != other.isAbstract) {
+            return false;
+        }
+        if (name == null) {
+            if (other.name != null) {
+                return false;
+            }
+        } else if (!name.equals(other.name)) {
+            return false;
+        }
+        if (objectId == null) {
+            if (other.objectId != null) {
+                return false;
+            }
+        } else if (!objectId.equals(other.objectId)) {
+            return false;
+        }
+        if (objectType == null) {
+            if (other.objectType != null) {
+                return false;
+            }
+        } else if (!objectType.equals(other.objectType)) {
+            return false;
+        }
+        if (pkg == null) {
+            if (other.pkg != null) {
+                return false;
+            }
+        } else if (!pkg.equals(other.pkg)) {
+            return false;
+        }
+        if (scope != other.scope) {
+            return false;
+        }
+        return true;
     }
 
     @Override

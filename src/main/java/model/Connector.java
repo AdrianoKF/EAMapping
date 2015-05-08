@@ -9,6 +9,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import model.datatypes.AggregationType;
+import model.datatypes.Scope;
+
 @Entity
 @Table(name = "t_connector")
 public class Connector {

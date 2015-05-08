@@ -83,6 +83,78 @@ public class Package {
     }
 
     @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        result = prime * result
+                + ((namespace == null) ? 0 : namespace.hashCode());
+        result = prime * result + ((notes == null) ? 0 : notes.hashCode());
+        result = prime * result
+                + ((packageId == null) ? 0 : packageId.hashCode());
+        result = prime * result + ((parent == null) ? 0 : parent.hashCode());
+        result = prime * result + ((version == null) ? 0 : version.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(java.lang.Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (!(obj instanceof Package)) {
+            return false;
+        }
+        Package other = (Package) obj;
+        if (name == null) {
+            if (other.name != null) {
+                return false;
+            }
+        } else if (!name.equals(other.name)) {
+            return false;
+        }
+        if (namespace == null) {
+            if (other.namespace != null) {
+                return false;
+            }
+        } else if (!namespace.equals(other.namespace)) {
+            return false;
+        }
+        if (notes == null) {
+            if (other.notes != null) {
+                return false;
+            }
+        } else if (!notes.equals(other.notes)) {
+            return false;
+        }
+        if (packageId == null) {
+            if (other.packageId != null) {
+                return false;
+            }
+        } else if (!packageId.equals(other.packageId)) {
+            return false;
+        }
+        if (parent == null) {
+            if (other.parent != null) {
+                return false;
+            }
+        } else if (!parent.equals(other.parent)) {
+            return false;
+        }
+        if (version == null) {
+            if (other.version != null) {
+                return false;
+            }
+        } else if (!version.equals(other.version)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
     public String toString() {
         return String.format("[Package '%s', version=%s]", name, version);
     }

@@ -12,6 +12,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import model.datatypes.Scope;
+
 @Entity
 @Table(name = "t_attribute")
 public class Attribute {
@@ -84,7 +86,8 @@ public class Attribute {
 
     @Override
     public String toString() {
-        return String.format("[Attribute %c'%s', type=%s, default value = '%s']",
+        return String.format(
+                "[Attribute %c'%s', type=%s, default value = '%s']",
                 scope.getSymbol(), name, type, defaultValue);
     }
 }
