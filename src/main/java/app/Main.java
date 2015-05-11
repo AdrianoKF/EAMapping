@@ -1,5 +1,8 @@
 package app;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+
 import model.Attribute;
 import model.AttributeTag;
 import model.Connector;
@@ -9,22 +12,24 @@ import model.ObjectProperty;
 import model.Operation;
 import model.OperationParameter;
 import model.Package;
-
-import org.hibernate.SessionFactory;
-
 import dao.DiagramRepository;
+import dao.HibernateUtil;
 import dao.ObjectRepository;
 import dao.PackageRepository;
 
 public class Main {
     public static void main(String[] args) {
-        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+        final EntityManagerFactory emf = HibernateUtil
+                .getEntityManagerFactory();
+        final EntityManager em = emf.createEntityManager();
         try {
-            sessionFactory.getCurrentSession().beginTransaction();
-            findByStereotype();
+            em.getTransaction().begin();
+            //findByStereotype();
+            printAllObjects();
         } finally {
-            sessionFactory.getCurrentSession().getTransaction().commit();
-            sessionFactory.close();
+            em.getTransaction().rollback();
+            em.close();
+            emf.close();
         }
     }
 

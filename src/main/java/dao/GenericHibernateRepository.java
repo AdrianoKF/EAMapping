@@ -1,11 +1,12 @@
 package dao;
 
 import java.io.Serializable;
+import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
-import org.hibernate.Session;
-
-import app.HibernateUtil;
+import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 /**
  * Implementation of a {@link GenericRepository} using the Hibernate ORM
@@ -15,26 +16,32 @@ import app.HibernateUtil;
  * @param <TEntity>
  * @param <TId>
  */
-@SuppressWarnings("unchecked")
 public abstract class GenericHibernateRepository<TEntity, TId extends Serializable>
         implements GenericRepository<TEntity, TId> {
-    protected Session session = HibernateUtil
-            .getSessionFactory()
-            .getCurrentSession();
+    protected EntityManager em = HibernateUtil
+            .getEntityManagerFactory()
+            .createEntityManager();
     protected final Class<TEntity> entityClass;
 
-    protected GenericHibernateRepository(Class<TEntity> entityClass) {
-        this.entityClass = entityClass;
+    @SuppressWarnings("unchecked")
+    public GenericHibernateRepository() {
+        // Determine the actual template parameter class via reflection
+        this.entityClass = (Class<TEntity>) ((ParameterizedType) getClass()
+                .getGenericSuperclass()).getActualTypeArguments()[0];
     }
 
     @Override
     public List<TEntity> getAll() {
-        return (List<TEntity>) session.createCriteria(entityClass).list();
+        final CriteriaQuery<TEntity> query = em
+                .getCriteriaBuilder()
+                .createQuery(entityClass);
+        Root<TEntity> root = query.from(entityClass);
+        return em.createQuery(query.select(root)).getResultList();
     }
 
     @Override
     public TEntity get(TId id) {
-        return (TEntity) session.get(entityClass, id);
+        return (TEntity) em.find(entityClass, id);
     }
 
     @Override
@@ -43,18 +50,18 @@ public abstract class GenericHibernateRepository<TEntity, TId extends Serializab
             return false;
         }
 
-        session.delete(entity);
+        em.remove(entity);
         return true;
     }
 
     @Override
-    public TId saveOrUpdate(TEntity entity) {
+    public void saveOrUpdate(TEntity entity) {
         if (entity == null) {
             throw new IllegalArgumentException(
                     "Entity to persist must not be null.");
         }
 
-        session.saveOrUpdate(entity);
-        return (TId) session.getIdentifier(entity);
+        em.persist(entity);
+        em.refresh(entity);
     }
 }

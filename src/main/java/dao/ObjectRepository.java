@@ -7,15 +7,13 @@ import model.Object;
 
 public class ObjectRepository extends
         GenericHibernateRepository<Object, Integer> {
-    public ObjectRepository() {
-        super(Object.class);
-    }
-
     public Collection<Object> findByStereotype(String stereotype) {
-        @SuppressWarnings("unchecked") List<Object> result = session
-                .createQuery("FROM Object WHERE stereotype = :stereotype")
-                .setString("stereotype", stereotype)
-                .list();
+        final List<Object> result = em
+                .createQuery(
+                        "SELECT o FROM Object o WHERE stereotype = :stereotype",
+                        Object.class)
+                .setParameter("stereotype", stereotype)
+                .getResultList();
         return result;
     }
 }

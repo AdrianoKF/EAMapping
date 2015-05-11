@@ -40,12 +40,11 @@ public interface GenericRepository<TEntity, TId extends Serializable> {
     /**
      * Persists an entity in this repository.
      *
-     * If the entity has not been previously persisted, a new identifier will be
-     * assigned and returned. Otherwise, the persisted version will be updated
-     * and the current identifier is returned.
+     * If the entity has not been previously persisted, it will be assigned and
+     * identifier before persisting. Otherwise, the persisted version of this
+     * entity will be updated.
      *
      * @param entity
-     * @return the identifier of the persisted entity
      */
-    public TId saveOrUpdate(TEntity entity);
+    public void saveOrUpdate(TEntity entity);
 }
