@@ -123,8 +123,6 @@ public class Operation {
         result = prime * result + ((object == null) ? 0 : object.hashCode());
         result = prime * result
                 + ((operationId == null) ? 0 : operationId.hashCode());
-        result = prime * result
-                + ((parameters == null) ? 0 : parameters.hashCode());
         result = prime * result + ((scope == null) ? 0 : scope.hashCode());
         result = prime * result + ((type == null) ? 0 : type.hashCode());
         return result;
@@ -189,13 +187,6 @@ public class Operation {
                 return false;
             }
         } else if (!operationId.equals(other.operationId)) {
-            return false;
-        }
-        if (parameters == null) {
-            if (other.parameters != null) {
-                return false;
-            }
-        } else if (!parameters.equals(other.parameters)) {
             return false;
         }
         if (scope != other.scope) {
