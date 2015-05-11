@@ -18,7 +18,7 @@ import javax.persistence.criteria.Root;
  */
 public abstract class GenericHibernateRepository<TEntity, TId extends Serializable>
         implements GenericRepository<TEntity, TId> {
-    protected EntityManager em = HibernateUtil
+    protected final EntityManager em = HibernateUtil
             .getEntityManagerFactory()
             .createEntityManager();
     protected final Class<TEntity> entityClass;
