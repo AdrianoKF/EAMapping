@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+                                         "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+ <session-factory>
+  <property name="hibernate.connection.driver_class">org.h2.Driver</property>
+  <property name="hibernate.connection.url">jdbc:h2:mem:test;MODE=PostgreSQL</property>
+  <property name="hibernate.dialect">org.hibernate.dialect.H2Dialect</property>
+  <property name="hibernate.current_session_context_class">thread</property>
+  <mapping class="model.Attribute"/>
+  <mapping class="model.Package"/>
+  <mapping class="model.Object"/>
+  <mapping class="model.AttributeTag"/>
+  <mapping class="model.ObjectProperty"/>
+  <mapping class="model.Connector"/>
+  <mapping class="model.Operation"/>
+  <mapping class="model.OperationParameter"/>
+  <mapping class="model.Diagram"/>
+  <mapping class="model.DiagramObject"/>
+ </session-factory>
+</hibernate-configuration>
