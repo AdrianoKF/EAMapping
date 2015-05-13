@@ -11,8 +11,6 @@
 		<appender-ref ref="STDOUT" />
 	</root>
 
-    <!-- Hibernate is overly verbose by default -->
-	<root level="warn" logger="org.hibernate">
-	   <appender-ref ref="STDOUT" />
-	</root>
+	<!-- Hibernate is overly verbose by default -->
+	<logger level="info" name="org.hibernate" />
 </configuration>
