@@ -33,9 +33,8 @@ public interface GenericRepository<TEntity, TId extends Serializable> {
      * Delete a persistent entity.
      *
      * @param entity
-     * @return a boolean indicating successful deletion
      */
-    public boolean delete(TEntity entity);
+    public void delete(TEntity entity);
 
     /**
      * Persists an entity in this repository.

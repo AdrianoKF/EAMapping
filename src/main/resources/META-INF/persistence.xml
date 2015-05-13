@@ -10,4 +10,12 @@
 			<property name="hibernate.ejb.cfgfile" value="/hibernate.cfg.xml" />
 		</properties>
 	</persistence-unit>
+
+	<persistence-unit name="testPersistenceUnit"
+		transaction-type="RESOURCE_LOCAL">
+		<properties>
+			<!-- Import existing Hibernate configuration file -->
+			<property name="hibernate.ejb.cfgfile" value="/hibernate-test.cfg.xml" />
+		</properties>
+	</persistence-unit>
 </persistence>

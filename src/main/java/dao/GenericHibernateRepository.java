@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -18,9 +19,8 @@ import javax.persistence.criteria.Root;
  */
 public abstract class GenericHibernateRepository<TEntity, TId extends Serializable>
         implements GenericRepository<TEntity, TId> {
-    protected final EntityManager em = HibernateUtil
-            .getEntityManagerFactory()
-            .createEntityManager();
+
+    @Inject protected EntityManager em;
     protected final Class<TEntity> entityClass;
 
     @SuppressWarnings("unchecked")
@@ -45,13 +45,12 @@ public abstract class GenericHibernateRepository<TEntity, TId extends Serializab
     }
 
     @Override
-    public boolean delete(TEntity entity) {
+    public void delete(TEntity entity) {
         if (entity == null) {
-            return false;
+            return;
         }
 
         em.remove(entity);
-        return true;
     }
 
     @Override
