@@ -6,6 +6,18 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
+/**
+ * Utility class for configuring an {@link EntityManagerFactory} and creating
+ * {@link EntityManagers}.
+ *
+ * In the absence of full JPA capabilities in a Java SE context, we have to
+ * resort to programmatic provision of EntityManagers. If the application is
+ * deployed in a real application server, EntityManagers can be obtained from
+ * the container using the {@link javax.persistence.PersistenceContext}
+ * annotation.
+ *
+ * @author Adrian Rumpold (a.rumpold@gmail.com)
+ */
 public class HibernateUtil {
     private static final EntityManagerFactory emf = buildEntityManagerFactory();
 
