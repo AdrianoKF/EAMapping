@@ -1,7 +1,7 @@
-import com.sun.javafx.runtime.SystemProperties;
-
 apply plugin: 'java'
+apply plugin: 'application'
 apply plugin: 'eclipse'
+apply plugin: 'idea'
 
 task wrapper(type: Wrapper) {
     gradleVersion = '2.4'
@@ -27,7 +27,7 @@ dependencies {
     compile 'com.mchange:c3p0:0.9.5'
     compile 'org.postgresql:postgresql:9.4-1201-jdbc41'
 
-    compile 'org.jboss.weld.se:weld-se-core:2.2.11.Final'
+    compile 'org.jboss.weld.se:weld-se-core:3.0.0.Alpha8'
     compile 'org.jboss:jandex:1.2.4.Final'
 
     compile 'org.slf4j:slf4j-api:[1.7.12,)'
@@ -44,6 +44,8 @@ dependencies {
 uploadArchives {
     repositories { flatDir { dirs 'repos' } }
 }
+
+mainClassName = 'app.Main'
 
 test {
     systemProperties['persistenceUnit'] = 'testPersistenceUnit'
