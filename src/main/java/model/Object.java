@@ -15,12 +15,15 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import model.datatypes.Scope;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 @Entity
 @Table(name = "t_object")
 public class Object {
     @Id @Column(name = "object_id") private Integer objectId;
     @ManyToOne @JoinColumn(name = "package_id") private Package pkg;
+    @ManyToOne @NotFound(action = NotFoundAction.IGNORE) @JoinColumn(name = "parentid") private Object parent;
     private String name;
     @Enumerated(EnumType.STRING) private Scope scope;
     @Column(name = "object_type") private String objectType;
@@ -48,6 +51,14 @@ public class Object {
 
     public void setPkg(Package pkg) {
         this.pkg = pkg;
+    }
+
+    public Object getParent() {
+        return parent;
+    }
+
+    public void setParent(Object parent) {
+        this.parent = parent;
     }
 
     public String getName() {
