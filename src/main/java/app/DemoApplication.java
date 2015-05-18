@@ -1,34 +1,26 @@
 package app;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-
-import model.Attribute;
-import model.AttributeTag;
-import model.Connector;
-import model.Diagram;
-import model.Object;
-import model.ObjectProperty;
-import model.Operation;
-import model.OperationParameter;
-import model.Package;
 import dao.DiagramRepository;
-import dao.HibernateUtil;
 import dao.ObjectRepository;
 import dao.PackageRepository;
+import model.*;
+import model.Object;
+import model.Package;
 
-@Singleton
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
+
 public class DemoApplication {
     @Inject private ObjectRepository or;
+    @Inject private PackageRepository pr;
+    @Inject private DiagramRepository dr;
     @Inject private EntityManager em;
 
     public void run() {
         try {
             em.getTransaction().begin();
-            findByStereotype();
-            // printAllObjects();
+//            findByStereotype();
+             printAllObjects();
         } finally {
             em.getTransaction().rollback();
         }
@@ -42,10 +34,14 @@ public class DemoApplication {
     }
 
     private void printAllObjects() {
-        for (Package p : new PackageRepository().getAll()) {
+        for (Package p : pr.getAll()) {
             System.out.println(p);
             for (Object o : p.getObjects()) {
                 System.out.println("\t" + o);
+
+                if (o.getParent() != null) {
+                    System.out.println("\tcontained in " + o.getParent());
+                }
 
                 for (Operation op : o.getOperations()) {
                     System.out.println("\t\t" + op);
@@ -83,7 +79,7 @@ public class DemoApplication {
             System.out.println();
         }
 
-        for (Diagram d : new DiagramRepository().getAll()) {
+        for (Diagram d : dr.getAll()) {
             System.out.println(d);
             for (Object o : d.getObjects()) {
                 System.out.println("\t" + o);
