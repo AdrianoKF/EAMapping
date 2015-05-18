@@ -8,7 +8,7 @@ import javax.persistence.Persistence;
 
 /**
  * Utility class for configuring an {@link EntityManagerFactory} and creating
- * {@link EntityManagers}.
+ * {@link EntityManager}s.
  *
  * In the absence of full JPA capabilities in a Java SE context, we have to
  * resort to programmatic provision of EntityManagers. If the application is
@@ -49,7 +49,7 @@ public class HibernateUtil {
         try {
             em.close();
         } catch (Throwable t) {
-            System.out.println(t);
+            System.err.println(t);
         }
     }
 
