@@ -9,7 +9,7 @@ import javax.persistence.Persistence;
 /**
  * Utility class for configuring an {@link EntityManagerFactory} and creating
  * {@link EntityManager}s.
- *
+ * <p>
  * In the absence of full JPA capabilities in a Java SE context, we have to
  * resort to programmatic provision of EntityManagers. If the application is
  * deployed in a real application server, EntityManagers can be obtained from

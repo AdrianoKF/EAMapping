@@ -19,8 +19,8 @@ public class DemoApplication {
     public void run() {
         try {
             em.getTransaction().begin();
-//            findByStereotype();
-             printAllObjects();
+            findByStereotype();
+//             printAllObjects();
         } finally {
             em.getTransaction().rollback();
         }
@@ -30,6 +30,10 @@ public class DemoApplication {
         for (Object o : or.findByStereotype("SystemDef")) {
             System.out.println(o);
             System.out.println(o.getTaggedValuesMap());
+        }
+
+        for (Connector c : or.findConnectorsByStereotype("trace")) {
+            System.out.println(c);
         }
     }
 
