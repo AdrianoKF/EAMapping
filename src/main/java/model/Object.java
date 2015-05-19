@@ -27,6 +27,7 @@ public class Object {
     private String name;
     @Enumerated(EnumType.STRING) private Scope scope;
     @Column(name = "object_type") private String objectType;
+    private String stereotype;
     @Column(name = "abstract") private boolean isAbstract;
 
     @OneToMany(mappedBy = "object") private Set<Attribute> attributes;
@@ -83,6 +84,14 @@ public class Object {
 
     public void setObjectType(String objectType) {
         this.objectType = objectType;
+    }
+
+    public String getStereotype() {
+        return stereotype;
+    }
+
+    public void setStereotype(String stereotype) {
+        this.stereotype = stereotype;
     }
 
     public boolean isAbstract() {
@@ -142,67 +151,32 @@ public class Object {
     }
 
     @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + (isAbstract ? 1231 : 1237);
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
-        result = prime * result
-                + ((objectId == null) ? 0 : objectId.hashCode());
-        result = prime * result
-                + ((objectType == null) ? 0 : objectType.hashCode());
-        result = prime * result + ((pkg == null) ? 0 : pkg.hashCode());
-        result = prime * result + ((scope == null) ? 0 : scope.hashCode());
-        return result;
+    public boolean equals(java.lang.Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Object object = (Object) o;
+
+        if (isAbstract != object.isAbstract) return false;
+        if (objectId != null ? !objectId.equals(object.objectId) : object.objectId != null) return false;
+        if (pkg != null ? !pkg.equals(object.pkg) : object.pkg != null) return false;
+        if (name != null ? !name.equals(object.name) : object.name != null) return false;
+        if (scope != object.scope) return false;
+        if (objectType != null ? !objectType.equals(object.objectType) : object.objectType != null) return false;
+        return !(stereotype != null ? !stereotype.equals(object.stereotype) : object.stereotype != null);
+
     }
 
     @Override
-    public boolean equals(java.lang.Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (!(obj instanceof Object)) {
-            return false;
-        }
-        Object other = (Object) obj;
-        if (isAbstract != other.isAbstract) {
-            return false;
-        }
-        if (name == null) {
-            if (other.name != null) {
-                return false;
-            }
-        } else if (!name.equals(other.name)) {
-            return false;
-        }
-        if (objectId == null) {
-            if (other.objectId != null) {
-                return false;
-            }
-        } else if (!objectId.equals(other.objectId)) {
-            return false;
-        }
-        if (objectType == null) {
-            if (other.objectType != null) {
-                return false;
-            }
-        } else if (!objectType.equals(other.objectType)) {
-            return false;
-        }
-        if (pkg == null) {
-            if (other.pkg != null) {
-                return false;
-            }
-        } else if (!pkg.equals(other.pkg)) {
-            return false;
-        }
-        if (scope != other.scope) {
-            return false;
-        }
-        return true;
+    public int hashCode() {
+        int result = objectId != null ? objectId.hashCode() : 0;
+        result = 31 * result + (pkg != null ? pkg.hashCode() : 0);
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (scope != null ? scope.hashCode() : 0);
+        result = 31 * result + (objectType != null ? objectType.hashCode() : 0);
+        result = 31 * result + (stereotype != null ? stereotype.hashCode() : 0);
+        result = 31 * result + (isAbstract ? 1 : 0);
+        return result;
     }
 
     @Override
