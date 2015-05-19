@@ -37,6 +37,7 @@ dependencies {
     testCompile('org.jglue.cdi-unit:cdi-unit:3.1.2') {
         exclude group: 'org.jboss.weld.se'
     }
+    testCompile 'org.reflections:reflections:0.9.10'  // v0.9.9-RC2 is broken, required by cdi-unit
     testRuntime 'com.h2database:h2:1.4.187'
     testCompile 'junit:junit:4.+'
 }
