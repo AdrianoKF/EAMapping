@@ -1,19 +1,14 @@
 package app;
 
-import dao.HibernateUtil;
 import org.jboss.weld.environment.se.Weld;
 import org.jboss.weld.environment.se.WeldContainer;
 
 public class Main {
     public static void main(String[] args) {
-        final Weld weld = new Weld()
-                .enableDiscovery()
-                .addPackage(false, HibernateUtil.class)
-                .addPackage(false, DemoApplication.class);
+        final Weld weld = new Weld();
         final WeldContainer cdiContainer = weld.initialize();
 
         final DemoApplication app = cdiContainer
-                .instance()
                 .select(DemoApplication.class)
                 .get();
 

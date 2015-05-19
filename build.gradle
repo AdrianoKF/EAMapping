@@ -51,3 +51,15 @@ mainClassName = 'app.Main'
 test {
     systemProperties['persistenceUnit'] = 'testPersistenceUnit'
 }
+
+/*
+ * Make Gradle tag along with weld-se bean discovery.
+ * See http://stackoverflow.com/q/30255760/27232
+*/
+
+task copyResources(type: Copy) {
+    from "${projectDir}/src/main/resources"
+    into "${buildDir}/classes/main"
+}
+
+processResources.dependsOn copyResources
