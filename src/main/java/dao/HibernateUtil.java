@@ -2,6 +2,7 @@ package dao;
 
 import javax.enterprise.inject.Disposes;
 import javax.enterprise.inject.Produces;
+import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -21,7 +22,8 @@ import javax.persistence.Persistence;
  */
 @Singleton
 public class HibernateUtil {
-    private final EntityManagerFactory emf = buildEntityManagerFactory();
+    @Inject
+    private EntityManagerFactory emf;
 
     @Produces
     private static EntityManagerFactory buildEntityManagerFactory() {
@@ -37,9 +39,8 @@ public class HibernateUtil {
         }
     }
 
-    @Produces
     public EntityManagerFactory getEntityManagerFactory() {
-        return emf;
+        return buildEntityManagerFactory();
     }
 
     @Produces
@@ -62,7 +63,7 @@ public class HibernateUtil {
         try {
             emf.close();
         } catch (Throwable t) {
-            System.out.println(t);
+            System.err.println(t);
         }
     }
 }
