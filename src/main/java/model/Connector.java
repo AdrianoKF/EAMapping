@@ -10,25 +10,49 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import model.datatypes.AggregationType;
+import model.datatypes.ConnectorType;
 import model.datatypes.Scope;
 
 @Entity
 @Table(name = "t_connector")
 public class Connector {
-    @Id @Column(name = "connector_id") private Integer connectorId;
-    @ManyToOne @JoinColumn(name = "start_object_id") private Object sourceObject;
-    @ManyToOne @JoinColumn(name = "end_object_id") private Object destObject;
+    @Id
+    @Column(name = "connector_id")
+    private Integer connectorId;
+    
+    @ManyToOne
+    @JoinColumn(name = "start_object_id")
+    private Object sourceObject;
+
+    @ManyToOne
+    @JoinColumn(name = "end_object_id")
+    private Object destObject;
     private String name;
-    @Column(name = "connector_type") private String type;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "connector_type")
+    private ConnectorType type;
+
+    private String stereotype;
     private String direction;
     private String notes;
 
     private String sourceRole;
     private String destRole;
-    @Enumerated(EnumType.STRING) private Scope sourceAccess;
-    @Enumerated(EnumType.STRING) private Scope destAccess;
-    @Enumerated(EnumType.ORDINAL) @Column(name = "sourceisaggregate") private AggregationType sourceAggregationType;
-    @Enumerated(EnumType.ORDINAL) @Column(name = "destisaggregate") private AggregationType destAggregationType;
+
+    @Enumerated(EnumType.STRING)
+    private Scope sourceAccess;
+
+    @Enumerated(EnumType.STRING)
+    private Scope destAccess;
+
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "sourceisaggregate")
+    private AggregationType sourceAggregationType;
+
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "destisaggregate")
+    private AggregationType destAggregationType;
 
     public Integer getConnectorId() {
         return connectorId;
@@ -62,12 +86,20 @@ public class Connector {
         this.name = name;
     }
 
-    public String getType() {
+    public ConnectorType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(ConnectorType type) {
         this.type = type;
+    }
+
+    public String getStereotype() {
+        return stereotype;
+    }
+
+    public void setStereotype(String stereotype) {
+        this.stereotype = stereotype;
     }
 
     public String getDirection() {
