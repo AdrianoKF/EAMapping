@@ -8,8 +8,10 @@ import model.Object;
 import model.Package;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.persistence.EntityManager;
 
+@Singleton
 public class DemoApplication {
     @Inject private ObjectRepository or;
     @Inject private PackageRepository pr;

@@ -12,13 +12,12 @@ import java.util.List;
  * Implementation of a {@link GenericRepository} using the Hibernate ORM
  * framework.
  *
+ * @param <TEntity> the type of entities stored in this repository
+ * @param <TId>     the primary key type of entities in this repository
  * @author Adrian Rumpold (a.rumpold@gmail.com)
- * @param <TEntity>
- * @param <TId>
  */
 public abstract class GenericHibernateRepository<TEntity, TId extends Serializable>
         implements GenericRepository<TEntity, TId> {
-
     @Inject protected EntityManager em;
     protected final Class<TEntity> entityClass;
 
