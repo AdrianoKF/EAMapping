@@ -7,6 +7,7 @@ import org.jgrapht.graph.ListenableDirectedGraph;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Collection;
 import java.util.Stack;
 import java.util.function.Predicate;
 
@@ -15,19 +16,21 @@ import java.util.function.Predicate;
  */
 public class GraphTransformer {
     private static final Logger log = LoggerFactory.getLogger(GraphTransformer.class);
-    private final Object root;
+    private final Collection<Object> initialObjects;
 
-    public GraphTransformer(Object root) {
-        this.root = root;
+    public GraphTransformer(Collection<Object> initialObjects) {
+        this.initialObjects = initialObjects;
     }
 
     public ListenableDirectedGraph<Object, Connector> transformToGraph(Predicate<Object> objectFilter, Predicate<Connector> connectorFilter) {
         final Stack<Object> worklist = new Stack<>();
         final ListenableDirectedGraph<Object, Connector> graph = new ListenableDirectedGraph<>(Connector.class);
 
-        if (objectFilter.test(root)) {
-            worklist.add(root);
-        }
+        initialObjects.forEach(node -> {
+            if (objectFilter.test(node)) {
+                worklist.add(node);
+            }
+        });
 
         while (!worklist.isEmpty()) {
             final Object node = worklist.pop();

@@ -7,8 +7,9 @@ import dao.PackageRepository;
 import model.*;
 import model.Object;
 import model.Package;
-import model.datatypes.ConnectorType;
+import model.datatypes.ObjectType;
 import org.jgraph.JGraph;
+import org.jgrapht.alg.StrongConnectivityInspector;
 import org.jgrapht.ext.JGraphModelAdapter;
 import org.jgrapht.graph.ListenableDirectedGraph;
 
@@ -21,14 +22,10 @@ import java.util.function.Predicate;
 
 @Singleton
 public class DemoApplication {
-    @Inject
-    private ObjectRepository or;
-    @Inject
-    private PackageRepository pr;
-    @Inject
-    private DiagramRepository dr;
-    @Inject
-    private EntityManager em;
+    @Inject private ObjectRepository or;
+    @Inject private PackageRepository pr;
+    @Inject private DiagramRepository dr;
+    @Inject private EntityManager em;
 
     public void run() {
         try {
@@ -64,13 +61,18 @@ public class DemoApplication {
     }
 
     private void createGraph() {
-        final Object root = or.getAll().get(0);
-        final GraphTransformer transformer = new GraphTransformer(root);
+        final GraphTransformer transformer = new GraphTransformer(or.getAll());
 
-        final Predicate<Object> objectFilter = o -> true;
-        final Predicate<Connector> connectorFilter = c -> c.getType() != ConnectorType.Realisation;
+        final Predicate<Object> objectFilter = o -> o.getParent() == null && o.getObjectType() != ObjectType.Package;
+//        final Predicate<Connector> connectorFilter = c -> c.getType() != ConnectorType.Realisation;
+        final Predicate<Connector> connectorFilter = c -> true;
 
         final ListenableDirectedGraph<Object, Connector> graph = transformer.transformToGraph(objectFilter, connectorFilter);
+
+        StrongConnectivityInspector<Object, Connector> inspector = new StrongConnectivityInspector<>(graph);
+        inspector.stronglyConnectedSets().forEach(scc -> System.out.println("SCC: " + scc));
+
+        // Display the graph in a Swing panel
         final GraphFrame graphFrame = new GraphFrame(graph);
         graphFrame.setVisible(true);
         graphFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
