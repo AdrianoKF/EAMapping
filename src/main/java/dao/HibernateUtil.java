@@ -32,7 +32,6 @@ public class HibernateUtil {
                     "persistenceUnit", "persistenceUnit");
             return Persistence.createEntityManagerFactory(persistenceUnit);
         } catch (Throwable ex) {
-            // Make sure you log the exception, as it might be swallowed
             System.err.println("Initial EntityManagerFactory creation failed."
                     + ex);
             throw new ExceptionInInitializerError(ex);
@@ -49,7 +48,6 @@ public class HibernateUtil {
     }
 
     public void closeEntityManager(@Disposes EntityManager em) {
-        System.out.println("Closing EM");
         try {
             em.close();
         } catch (Throwable t) {
@@ -59,7 +57,6 @@ public class HibernateUtil {
 
     public static void closeEntityManagerFactory(
             @Disposes EntityManagerFactory emf) {
-        System.out.println("Closing EMF");
         try {
             emf.close();
         } catch (Throwable t) {
