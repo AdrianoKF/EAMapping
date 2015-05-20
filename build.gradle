@@ -57,9 +57,13 @@ test {
  * See http://stackoverflow.com/q/30255760/27232
 */
 
-task copyResources(type: Copy) {
-    from "${projectDir}/src/main/resources"
-    into "${buildDir}/classes/main"
+task copyBeanDescriptor(type: Copy) {
+    from('src/main/resources') { include 'META-INF/beans.xml' }
+    into "$buildDir/classes/main/"
 }
 
-processResources.dependsOn copyResources
+classes.dependsOn copyBeanDescriptor
+
+sourceSets.main.resources {
+    exclude 'META-INF/beans.xml'
+}

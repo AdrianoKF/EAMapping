@@ -1,14 +1,13 @@
 package helper;
 
+import app.Main;
 import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
-import dao.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.jdbc.Work;
+import org.jglue.cdiunit.AdditionalClasspaths;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.runners.model.InitializationError;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -18,14 +17,16 @@ import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+@AdditionalClasspaths(Main.class)
 public abstract class DatabaseAwareTest {
     @Inject
     protected EntityManager em;
 
-    private static void executeSqlScript(String resourcePath)
+    private void executeSqlScript(String resourcePath)
             throws IOException {
-        final Session session = new HibernateUtil().createEntityManager().unwrap(
-                Session.class);
+        System.out.println("Executing SQL script " + resourcePath);
+
+        final Session session = em.unwrap(Session.class);
         try (InputStream in = DatabaseAwareTest.class
                 .getResourceAsStream(resourcePath)) {
             final String query = CharStreams.toString(new InputStreamReader(in,
@@ -44,20 +45,17 @@ public abstract class DatabaseAwareTest {
         }
     }
 
-    @BeforeClass
-    public static void init() throws InitializationError {
+    @Before
+    public void prepareTest() {
         /* Set up Hibernate database schema */
         try {
             executeSqlScript("/schema.sql");
             executeSqlScript("/seed.sql");
+
+            em.getTransaction().begin();
         } catch (IOException e) {
             System.out.println();
         }
-    }
-
-    @Before
-    public void prepareTest() {
-        em.getTransaction().begin();
     }
 
     @After
