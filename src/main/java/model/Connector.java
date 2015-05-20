@@ -169,10 +169,9 @@ public class Connector {
     @Override
     public String toString() {
         return String
-                .format("[Connector '%s', type=%s, direction=%s, sourceAggr=%s, destAggr=%s, start = %c%s, end = %c%s]",
-                        name, type, direction, sourceAggregationType,
-                        destAggregationType, sourceAccess.getSymbol(),
-                        sourceObject.getName(), destAccess.getSymbol(),
-                        destObject.getName());
+                .format("[%s '%s', direction=%s, start = %c%s, end = %c%s]",
+                        type, name, direction,
+                        sourceAccess.getSymbol(), sourceObject.getName(),
+                        destAccess.getSymbol(), destObject.getName());
     }
 }

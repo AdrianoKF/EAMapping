@@ -173,7 +173,6 @@ public class Object {
 
     @Override
     public String toString() {
-        return String.format("[Object %c'%s', type=%s]", scope.getSymbol(),
-                name, objectType);
+        return String.format("[%s %c'%s']", objectType, scope.getSymbol(), name);
     }
 }
