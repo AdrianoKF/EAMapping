@@ -1,31 +1,79 @@
 package app;
 
+import analysis.GraphTransformer;
 import dao.DiagramRepository;
 import dao.ObjectRepository;
 import dao.PackageRepository;
 import model.*;
 import model.Object;
 import model.Package;
+import model.datatypes.ConnectorType;
+import org.jgraph.JGraph;
+import org.jgrapht.ext.JGraphModelAdapter;
+import org.jgrapht.graph.ListenableDirectedGraph;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.persistence.EntityManager;
+import javax.swing.*;
+import java.awt.*;
+import java.util.function.Predicate;
 
 @Singleton
 public class DemoApplication {
-    @Inject private ObjectRepository or;
-    @Inject private PackageRepository pr;
-    @Inject private DiagramRepository dr;
-    @Inject private EntityManager em;
+    @Inject
+    private ObjectRepository or;
+    @Inject
+    private PackageRepository pr;
+    @Inject
+    private DiagramRepository dr;
+    @Inject
+    private EntityManager em;
 
     public void run() {
         try {
             em.getTransaction().begin();
-            findByStereotype();
+
+            createGraph();
+//            findByStereotype();
 //             printAllObjects();
         } finally {
             em.getTransaction().rollback();
         }
+    }
+
+    private static class GraphFrame extends JFrame {
+        private static final Color DEFAULT_BG_COLOR = Color.decode("#FAFBFF");
+        private static final Dimension DEFAULT_SIZE = new Dimension(530, 320);
+        private final JGraph graphVis;
+
+        public GraphFrame(ListenableDirectedGraph<Object, Connector> graph) throws HeadlessException {
+            super();
+            graphVis = new JGraph(new JGraphModelAdapter<>(graph));
+            adjustDisplaySettings(graphVis);
+            getContentPane().add(graphVis);
+            setSize(DEFAULT_SIZE);
+        }
+
+        private void adjustDisplaySettings(JGraph jg) {
+            jg.setPreferredSize(DEFAULT_SIZE);
+
+            Color c = DEFAULT_BG_COLOR;
+            jg.setBackground(c);
+        }
+    }
+
+    private void createGraph() {
+        final Object root = or.getAll().get(0);
+        final GraphTransformer transformer = new GraphTransformer(root);
+
+        final Predicate<Object> objectFilter = o -> true;
+        final Predicate<Connector> connectorFilter = c -> c.getType() != ConnectorType.Realisation;
+
+        final ListenableDirectedGraph<Object, Connector> graph = transformer.transformToGraph(objectFilter, connectorFilter);
+        final GraphFrame graphFrame = new GraphFrame(graph);
+        graphFrame.setVisible(true);
+        graphFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
     private void findByStereotype() {
