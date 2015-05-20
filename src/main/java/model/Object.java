@@ -1,22 +1,14 @@
 package model;
 
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-
+import model.datatypes.ObjectType;
 import model.datatypes.Scope;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
+
+import javax.persistence.*;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
 @Entity
 @Table(name = "t_object")
@@ -26,9 +18,9 @@ public class Object {
     @ManyToOne @NotFound(action = NotFoundAction.IGNORE) @JoinColumn(name = "parentid") private Object parent;
     private String name;
     @Enumerated(EnumType.STRING) private Scope scope;
-    @Column(name = "object_type") private String objectType;
+    @Column(name = "object_type") @Enumerated(EnumType.STRING) private ObjectType objectType;
     private String stereotype;
-    @Column(name = "abstract") private boolean isAbstract;
+    @Column(name = "abstract") private Boolean isAbstract;
 
     @OneToMany(mappedBy = "object") private Set<Attribute> attributes;
     @OneToMany(mappedBy = "object") private Set<ObjectProperty> taggedValues;
@@ -78,11 +70,11 @@ public class Object {
         this.scope = scope;
     }
 
-    public String getObjectType() {
+    public ObjectType getObjectType() {
         return objectType;
     }
 
-    public void setObjectType(String objectType) {
+    public void setObjectType(ObjectType objectType) {
         this.objectType = objectType;
     }
 
@@ -153,17 +145,17 @@ public class Object {
     @Override
     public boolean equals(java.lang.Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Object)) return false;
 
         Object object = (Object) o;
 
-        if (isAbstract != object.isAbstract) return false;
         if (objectId != null ? !objectId.equals(object.objectId) : object.objectId != null) return false;
         if (pkg != null ? !pkg.equals(object.pkg) : object.pkg != null) return false;
         if (name != null ? !name.equals(object.name) : object.name != null) return false;
         if (scope != object.scope) return false;
-        if (objectType != null ? !objectType.equals(object.objectType) : object.objectType != null) return false;
-        return !(stereotype != null ? !stereotype.equals(object.stereotype) : object.stereotype != null);
+        if (objectType != object.objectType) return false;
+        if (stereotype != null ? !stereotype.equals(object.stereotype) : object.stereotype != null) return false;
+        return !(isAbstract != null ? !isAbstract.equals(object.isAbstract) : object.isAbstract != null);
 
     }
 
@@ -175,7 +167,7 @@ public class Object {
         result = 31 * result + (scope != null ? scope.hashCode() : 0);
         result = 31 * result + (objectType != null ? objectType.hashCode() : 0);
         result = 31 * result + (stereotype != null ? stereotype.hashCode() : 0);
-        result = 31 * result + (isAbstract ? 1 : 0);
+        result = 31 * result + (isAbstract != null ? isAbstract.hashCode() : 0);
         return result;
     }
 
