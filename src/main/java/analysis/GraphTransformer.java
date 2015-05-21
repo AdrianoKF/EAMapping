@@ -2,6 +2,7 @@ package analysis;
 
 import model.Connector;
 import model.Object;
+import model.datatypes.ConnectorDirection;
 import org.jgrapht.DirectedGraph;
 import org.jgrapht.graph.ListenableDirectedGraph;
 import org.slf4j.Logger;
@@ -57,7 +58,11 @@ public class GraphTransformer {
                         graph.addVertex(source);
                     }
 
-                    graph.addEdge(source, node, in);
+                    if (ConnectorDirection.DestinationToSource.getValue().equals(in.getDirection())) {
+                        graph.addEdge(node, source, in);
+                    } else {
+                        graph.addEdge(source, node, in);
+                    }
                 }
             });
 
@@ -73,7 +78,11 @@ public class GraphTransformer {
                         graph.addVertex(destination);
                     }
 
-                    graph.addEdge(node, destination, out);
+                    if (ConnectorDirection.DestinationToSource.getValue().equals(out.getDirection())) {
+                        graph.addEdge(destination, node, out);
+                    } else {
+                        graph.addEdge(node, destination, out);
+                    }
                 }
             });
         }
