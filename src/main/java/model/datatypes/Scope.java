@@ -5,7 +5,7 @@ public enum Scope {
 
     private char symbol;
 
-    private Scope(char symbol) {
+    Scope(char symbol) {
         this.symbol = symbol;
     }
 
