@@ -18,7 +18,7 @@ import model.datatypes.Scope;
 @Table(name = "t_operation")
 public class Operation {
     @Id @Column(name = "operationid") private Integer operationId;
-    @ManyToOne @JoinColumn(name = "object_id") private Object object;
+    @ManyToOne @JoinColumn(name = "object_id") private ModelObject object;
     private String name;
     @Column(name = "behaviour") private String behavior;
     private String notes;
@@ -36,11 +36,11 @@ public class Operation {
         this.operationId = operationId;
     }
 
-    public Object getObject() {
+    public ModelObject getObject() {
         return object;
     }
 
-    public void setObject(Object object) {
+    public void setObject(ModelObject object) {
         this.object = object;
     }
 

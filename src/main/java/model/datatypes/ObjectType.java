@@ -1,7 +1,7 @@
 package model.datatypes;
 
 /**
- * Identifies the type of model objects.
+ * Identifies the type of exceptions objects.
  */
 public enum ObjectType {
     Action,

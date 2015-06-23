@@ -1,9 +1,8 @@
 package analysis;
 
 import model.Connector;
-import model.Object;
+import model.ModelObject;
 import model.datatypes.ConnectorDirection;
-import org.jgrapht.DirectedGraph;
 import org.jgrapht.graph.ListenableDirectedGraph;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,15 +16,15 @@ import java.util.function.Predicate;
  */
 public class GraphTransformer {
     private static final Logger log = LoggerFactory.getLogger(GraphTransformer.class);
-    private final Collection<Object> initialObjects;
+    private final Collection<ModelObject> initialObjects;
 
-    public GraphTransformer(Collection<Object> initialObjects) {
+    public GraphTransformer(Collection<ModelObject> initialObjects) {
         this.initialObjects = initialObjects;
     }
 
-    public ListenableDirectedGraph<Object, Connector> transformToGraph(Predicate<Object> objectFilter, Predicate<Connector> connectorFilter) {
-        final Stack<Object> worklist = new Stack<>();
-        final ListenableDirectedGraph<Object, Connector> graph = new ListenableDirectedGraph<>(Connector.class);
+    public ListenableDirectedGraph<ModelObject, Connector> transformToGraph(Predicate<ModelObject> objectFilter, Predicate<Connector> connectorFilter) {
+        final Stack<ModelObject> worklist = new Stack<>();
+        final ListenableDirectedGraph<ModelObject, Connector> graph = new ListenableDirectedGraph<>(Connector.class);
 
         initialObjects.forEach(node -> {
             if (objectFilter.test(node)) {
@@ -34,7 +33,7 @@ public class GraphTransformer {
         });
 
         while (!worklist.isEmpty()) {
-            final Object node = worklist.pop();
+            final ModelObject node = worklist.pop();
 
             log.info("Visiting node: {}", node);
 
@@ -47,7 +46,7 @@ public class GraphTransformer {
             }
 
             node.getIncomingConnectors().forEach(in -> {
-                final Object source = in.getSourceObject();
+                final ModelObject source = in.getSourceObject();
                 final boolean addEdge = objectFilter.test(source) && connectorFilter.test(in);
 
                 log.info("Incoming connector: {} [addEdge={}]", in, addEdge);
@@ -67,7 +66,7 @@ public class GraphTransformer {
             });
 
             node.getOutgoingConnectors().forEach(out -> {
-                final Object destination = out.getDestObject();
+                final ModelObject destination = out.getDestObject();
                 final boolean addEdge = objectFilter.test(destination) && connectorFilter.test(out);
 
                 log.info("Outgoing connector: {} [addEdge={}]", out, addEdge);

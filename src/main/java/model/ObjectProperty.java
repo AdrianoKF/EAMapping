@@ -10,7 +10,7 @@ import javax.persistence.Table;
 @Table(name = "t_objectproperties")
 public class ObjectProperty {
     @Id private Integer propertyId;
-    @ManyToOne @JoinColumn(name = "object_id") private Object object;
+    @ManyToOne @JoinColumn(name = "object_id") private ModelObject object;
     private String property;
     private String value;
     private String notes;
@@ -23,11 +23,11 @@ public class ObjectProperty {
         this.propertyId = propertyId;
     }
 
-    public Object getObject() {
+    public ModelObject getObject() {
         return object;
     }
 
-    public void setObject(Object object) {
+    public void setObject(ModelObject object) {
         this.object = object;
     }
 

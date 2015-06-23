@@ -12,7 +12,7 @@ import org.junit.runner.RunWith;
 import dao.ObjectRepository;
 
 @RunWith(CdiRunner.class)
-public class ObjectRepositoryTest extends DatabaseAwareTest {
+public class ModelObjectRepositoryTest extends DatabaseAwareTest {
     @Inject private ObjectRepository or;
 
     @Test

@@ -12,7 +12,7 @@ import javax.persistence.Table;
 public class DiagramObject {
     @Id @Column(name = "instance_id") private Integer instaceId;
     @ManyToOne @JoinColumn(name = "diagram_id") private Diagram diagram;
-    @ManyToOne @JoinColumn(name = "object_id") private Object object;
+    @ManyToOne @JoinColumn(name = "object_id") private ModelObject object;
 
     public Integer getInstaceId() {
         return instaceId;
@@ -30,11 +30,11 @@ public class DiagramObject {
         this.diagram = diagram;
     }
 
-    public Object getObject() {
+    public ModelObject getObject() {
         return object;
     }
 
-    public void setObject(Object object) {
+    public void setObject(ModelObject object) {
         this.object = object;
     }
 

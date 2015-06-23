@@ -1,20 +1,24 @@
 package analysis;
 
+import static org.junit.Assert.*;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.function.Predicate;
+
 import model.Connector;
-import model.Object;
+import model.ModelObject;
 import model.datatypes.ConnectorDirection;
 import model.datatypes.ConnectorType;
 import model.datatypes.ObjectType;
 import model.datatypes.Scope;
+
 import org.jgrapht.Graph;
 import org.jgrapht.graph.ListenableDirectedGraph;
 import org.junit.Test;
-
-import java.util.*;
-import java.util.function.Predicate;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 /**
  * Created by Adriano on 21.05.2015.
@@ -25,20 +29,20 @@ public class GraphTransformerTest {
     @Test
     public void testEmptyGraph() {
         final GraphTransformer gt = new GraphTransformer(Collections.emptySet());
-        final Graph<Object, Connector> graph = gt.transformToGraph(ALWAYS_TRUE, ALWAYS_TRUE);
+        final Graph<ModelObject, Connector> graph = gt.transformToGraph(ALWAYS_TRUE, ALWAYS_TRUE);
         assertTrue(graph.edgeSet().isEmpty());
         assertTrue(graph.vertexSet().isEmpty());
     }
 
     @Test
     public void testUnconnectedGraph() {
-        final Collection<Object> nodes = createUnconnectedGraph(5);
+        final Collection<ModelObject> nodes = createUnconnectedGraph(5);
         final GraphTransformer gt = new GraphTransformer(nodes);
-        final Graph<Object, Connector> graph = gt.transformToGraph(ALWAYS_TRUE, ALWAYS_TRUE);
+        final Graph<ModelObject, Connector> graph = gt.transformToGraph(ALWAYS_TRUE, ALWAYS_TRUE);
 
         assertEquals(nodes.size(), graph.vertexSet().size());
         assertEquals(0, graph.edgeSet().size());
-        for (Object o : graph.vertexSet()) {
+        for (ModelObject o : graph.vertexSet()) {
             assertTrue(nodes.contains(o));
         }
     }
@@ -46,9 +50,9 @@ public class GraphTransformerTest {
     @Test
     public void testCompleteGraph() {
         final int size = 4;
-        final Collection<Object> nodes = createCompleteGraph(size);
+        final Collection<ModelObject> nodes = createCompleteGraph(size);
         final GraphTransformer gt = new GraphTransformer(nodes);
-        final ListenableDirectedGraph<Object, Connector> graph = gt.transformToGraph(ALWAYS_TRUE, ALWAYS_TRUE);
+        final ListenableDirectedGraph<ModelObject, Connector> graph = gt.transformToGraph(ALWAYS_TRUE, ALWAYS_TRUE);
 
         nodes.forEach(n -> {
             System.out.println(n);
@@ -64,31 +68,31 @@ public class GraphTransformerTest {
     @Test
     public void testObjectFilter() {
         final int size = 10;
-        final Collection<Object> nodes = createUnconnectedGraph(size);
+        final Collection<ModelObject> nodes = createUnconnectedGraph(size);
         final GraphTransformer gt = new GraphTransformer(nodes);
-        final Predicate<Object> objectFilter = o -> o.getObjectId() % 2 == 0;
-        final Graph<Object, Connector> graph = gt.transformToGraph(objectFilter, ALWAYS_TRUE);
+        final Predicate<ModelObject> objectFilter = o -> o.getObjectId() % 2 == 0;
+        final Graph<ModelObject, Connector> graph = gt.transformToGraph(objectFilter, ALWAYS_TRUE);
 
         assertEquals(size / 2, graph.vertexSet().size());
         assertEquals(0, graph.edgeSet().size());
-        for (Object o : graph.vertexSet()) {
+        for (ModelObject o : graph.vertexSet()) {
             assertTrue(objectFilter.test(o));
         }
     }
 
     /** Creates a number of unconnected objects */
-    private Collection<Object> createUnconnectedGraph(int size) {
-        final Collection<Object> nodes = new HashSet<>();
+    private Collection<ModelObject> createUnconnectedGraph(int size) {
+        final Collection<ModelObject> nodes = new HashSet<>();
         for (int i = 0; i < size; ++i) {
-            final Object o = createObject(i);
+            final ModelObject o = createObject(i);
 
             nodes.add(o);
         }
         return nodes;
     }
 
-    private Object createObject(int id) {
-        final Object o = new Object();
+    private ModelObject createObject(int id) {
+        final ModelObject o = new ModelObject();
         o.setName(Integer.toString(id));
         o.setObjectId(id);
         o.setScope(Scope.Public);
@@ -98,12 +102,12 @@ public class GraphTransformerTest {
         return o;
     }
 
-    private Collection<Object> createCompleteGraph(int size) {
-        final List<Object> result = new ArrayList<>(size);
+    private Collection<ModelObject> createCompleteGraph(int size) {
+        final List<ModelObject> result = new ArrayList<>(size);
 
         for (int i = 0; i < size; ++i) {
             final int id = i;
-            final Object o = createObject(id);
+            final ModelObject o = createObject(id);
             result.forEach(node -> {
                 connect(id, node, o);
             });
@@ -113,7 +117,7 @@ public class GraphTransformerTest {
         return result;
     }
 
-    private void connect(int id, Object source, Object destination) {
+    private void connect(int id, ModelObject source, ModelObject destination) {
         final Connector conn = new Connector();
         conn.setConnectorId(id);
         conn.setSourceObject(source);

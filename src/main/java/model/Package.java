@@ -24,7 +24,7 @@ public class Package {
     private String namespace;
 
     @ManyToOne @NotFound(action = NotFoundAction.IGNORE) @JoinColumn(name = "parent_id") private Package parent;
-    @OneToMany(mappedBy = "pkg") private Set<Object> objects;
+    @OneToMany(mappedBy = "pkg") private Set<ModelObject> objects;
 
     public Integer getPackageId() {
         return packageId;
@@ -74,11 +74,11 @@ public class Package {
         this.parent = parent;
     }
 
-    public Set<Object> getObjects() {
+    public Set<ModelObject> getObjects() {
         return objects;
     }
 
-    public void setObjects(Set<Object> objects) {
+    public void setObjects(Set<ModelObject> objects) {
         this.objects = objects;
     }
 

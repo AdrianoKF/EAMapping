@@ -22,11 +22,11 @@ public class Connector {
     
     @ManyToOne
     @JoinColumn(name = "start_object_id")
-    private Object sourceObject;
+    private ModelObject sourceObject;
 
     @ManyToOne
     @JoinColumn(name = "end_object_id")
-    private Object destObject;
+    private ModelObject destObject;
     private String name;
 
     @Enumerated(EnumType.STRING)
@@ -62,19 +62,19 @@ public class Connector {
         this.connectorId = connectorId;
     }
 
-    public Object getSourceObject() {
+    public ModelObject getSourceObject() {
         return sourceObject;
     }
 
-    public void setSourceObject(Object sourceObject) {
+    public void setSourceObject(ModelObject sourceObject) {
         this.sourceObject = sourceObject;
     }
 
-    public Object getDestObject() {
+    public ModelObject getDestObject() {
         return destObject;
     }
 
-    public void setDestObject(Object destObject) {
+    public void setDestObject(ModelObject destObject) {
         this.destObject = destObject;
     }
 

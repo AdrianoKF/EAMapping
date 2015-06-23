@@ -6,17 +6,20 @@ import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "t_object")
-public class Object {
+public class ModelObject {
     @Id @Column(name = "object_id") private Integer objectId;
     @ManyToOne @JoinColumn(name = "package_id") private Package pkg;
-    @ManyToOne @NotFound(action = NotFoundAction.IGNORE) @JoinColumn(name = "parentid") private Object parent;
+    @ManyToOne @NotFound(action = NotFoundAction.IGNORE) @JoinColumn(name = "parentid") private ModelObject parent;
     private String name;
+    private String note;
     @Enumerated(EnumType.STRING) private Scope scope;
     @Column(name = "object_type") @Enumerated(EnumType.STRING) private ObjectType objectType;
     private String stereotype;
@@ -46,11 +49,11 @@ public class Object {
         this.pkg = pkg;
     }
 
-    public Object getParent() {
+    public ModelObject getParent() {
         return parent;
     }
 
-    public void setParent(Object parent) {
+    public void setParent(ModelObject parent) {
         this.parent = parent;
     }
 
@@ -60,6 +63,14 @@ public class Object {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNotes(String note) {
+        this.note = note;
     }
 
     public Scope getScope() {
@@ -142,12 +153,27 @@ public class Object {
         return result;
     }
 
+    public Collection<ModelObject> getPredecessors() {
+        return getIncomingConnectors()
+                .stream()
+                .map(Connector::getSourceObject)
+                .collect(Collectors.toList());
+    }
+
+
+    public Collection<ModelObject> getSuccessors() {
+        return getOutgoingConnectors()
+                .stream()
+                .map(Connector::getDestObject)
+                .collect(Collectors.toList());
+    }
+
     @Override
     public boolean equals(java.lang.Object o) {
         if (this == o) return true;
-        if (!(o instanceof Object)) return false;
+        if (!(o instanceof ModelObject)) return false;
 
-        Object object = (Object) o;
+        ModelObject object = (ModelObject) o;
 
         if (objectId != null ? !objectId.equals(object.objectId) : object.objectId != null) return false;
         if (pkg != null ? !pkg.equals(object.pkg) : object.pkg != null) return false;
@@ -173,6 +199,8 @@ public class Object {
 
     @Override
     public String toString() {
-        return String.format("[%s %c'%s']", objectType, scope.getSymbol(), name);
+        return String.format("[%s%s %c'%s']",
+                stereotype != null ? "<<" + stereotype + ">> " : "",
+                objectType, scope.getSymbol(), name);
     }
 }

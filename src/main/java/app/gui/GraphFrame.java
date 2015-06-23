@@ -1,7 +1,7 @@
 package app.gui;
 
 import model.Connector;
-import model.Object;
+import model.ModelObject;
 import org.jgraph.JGraph;
 import org.jgrapht.ext.JGraphModelAdapter;
 import org.jgrapht.graph.ListenableDirectedGraph;
@@ -17,7 +17,7 @@ public class GraphFrame extends JFrame {
     private static final Dimension DEFAULT_SIZE = new Dimension(1024, 768);
     private final JGraph graphVis;
 
-    public GraphFrame(ListenableDirectedGraph<Object, Connector> graph) throws HeadlessException {
+    public GraphFrame(ListenableDirectedGraph<ModelObject, Connector> graph) throws HeadlessException {
         super();
         graphVis = new JGraph(new JGraphModelAdapter<>(graph));
         adjustDisplaySettings(graphVis);

@@ -1,20 +1,19 @@
 package dao;
 
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.List;
 
 import model.Connector;
-import model.Object;
+import model.ModelObject;
 import model.datatypes.ConnectorType;
 
 public class ObjectRepository extends
-        GenericHibernateRepository<Object, Integer> {
-    public Collection<Object> findByStereotype(String stereotype) {
-        final List<Object> result = em
+        GenericHibernateRepository<ModelObject, Integer> {
+    public Collection<ModelObject> findByStereotype(String stereotype) {
+        final List<ModelObject> result = em
                 .createQuery(
-                        "SELECT o FROM Object o WHERE stereotype = :stereotype",
-                        Object.class)
+                        "SELECT o FROM ModelObject o WHERE stereotype = :stereotype",
+                        ModelObject.class)
                 .setParameter("stereotype", stereotype)
                 .getResultList();
         return result;

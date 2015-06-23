@@ -1,10 +1,12 @@
 package model.datatypes;
 
+import model.ModelObject;
+
 /**
  * Identifies the types of connectors between objects.
  *
  * @see model.Connector
- * @see model.Object
+ * @see ModelObject
  */
 public enum ConnectorType {
     Abstraction,

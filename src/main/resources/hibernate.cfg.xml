@@ -16,7 +16,7 @@
 		<property name="hibernate.c3p0.timeout">300</property>
 		<mapping class="model.Attribute" />
 		<mapping class="model.Package" />
-		<mapping class="model.Object" />
+		<mapping class="model.ModelObject" />
 		<mapping class="model.AttributeTag" />
 		<mapping class="model.ObjectProperty" />
 		<mapping class="model.Connector" />

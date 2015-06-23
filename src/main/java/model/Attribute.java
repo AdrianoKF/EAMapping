@@ -22,7 +22,7 @@ public class Attribute {
     private String type;
     @Enumerated(EnumType.STRING) private Scope scope;
 
-    @ManyToOne @JoinColumn(name = "object_id") private Object object;
+    @ManyToOne @JoinColumn(name = "object_id") private ModelObject object;
 
     @Column(name = "`Default`") private String defaultValue;
 
@@ -76,11 +76,11 @@ public class Attribute {
         this.taggedValues = taggedValues;
     }
 
-    public Object getObject() {
+    public ModelObject getObject() {
         return object;
     }
 
-    public void setObject(Object object) {
+    public void setObject(ModelObject object) {
         this.object = object;
     }
 

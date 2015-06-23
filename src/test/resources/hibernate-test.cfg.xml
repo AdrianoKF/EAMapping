@@ -9,7 +9,7 @@
   <property name="hibernate.current_session_context_class">thread</property>
   <mapping class="model.Attribute"/>
   <mapping class="model.Package"/>
-  <mapping class="model.Object"/>
+  <mapping class="model.ModelObject"/>
   <mapping class="model.AttributeTag"/>
   <mapping class="model.ObjectProperty"/>
   <mapping class="model.Connector"/>

@@ -29,7 +29,7 @@ public class Diagram {
             name = "t_diagramobjects",
             inverseJoinColumns = @JoinColumn(name = "object_id"),
             joinColumns = @JoinColumn(name = "diagram_id"))
-    private Set<Object> objects;
+    private Set<ModelObject> objects;
 
     @ManyToMany
     @JoinTable(
@@ -86,11 +86,11 @@ public class Diagram {
         this.notes = notes;
     }
 
-    public Set<Object> getObjects() {
+    public Set<ModelObject> getObjects() {
         return objects;
     }
 
-    public void setObjects(Set<Object> objects) {
+    public void setObjects(Set<ModelObject> objects) {
         this.objects = objects;
     }
 
