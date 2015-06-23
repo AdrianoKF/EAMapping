@@ -1,12 +1,14 @@
 package app;
 
 import analysis.GraphTransformer;
+import analysis.faulttrees.mapper.FaultTreeMapper;
+import analysis.faulttrees.mapper.exceptions.MalformedTreeException;
 import app.gui.GraphFrame;
 import dao.DiagramRepository;
+import dao.FaultTreeRepository;
 import dao.ObjectRepository;
 import dao.PackageRepository;
 import model.*;
-import model.Object;
 import model.Package;
 import model.datatypes.ObjectType;
 import org.jgrapht.alg.StrongConnectivityInspector;
@@ -16,6 +18,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.persistence.EntityManager;
 import javax.swing.*;
+import java.util.Collection;
 import java.util.function.Predicate;
 
 @Singleton
@@ -23,13 +26,16 @@ public class DemoApplication {
     @Inject private ObjectRepository or;
     @Inject private PackageRepository pr;
     @Inject private DiagramRepository dr;
+    @Inject private FaultTreeRepository ftr;
+
     @Inject private EntityManager em;
 
     public void run() {
         try {
             em.getTransaction().begin();
 
-            createGraph();
+            transformFaultTree();
+//            createGraph();
 //            findByStereotype();
 //             printAllObjects();
         } finally {
@@ -37,16 +43,33 @@ public class DemoApplication {
         }
     }
 
+    private void transformFaultTree() {
+        final FaultTreeMapper mapper = new FaultTreeMapper();
+        final Diagram d = dr.findByName("FaultTreeTest");
+        System.out.println(d);
+
+        final Collection<ModelObject> rootNodes = ftr.findRootNodes(d);
+        System.out.println(rootNodes);
+        try {
+            for (ModelObject root : rootNodes) {
+                mapper.walkSubtree(root);
+                System.out.println("--------------------");
+            }
+        } catch (MalformedTreeException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void createGraph() {
         final GraphTransformer transformer = new GraphTransformer(or.getAll());
 
-        final Predicate<Object> objectFilter = o -> o.getParent() == null && o.getObjectType() != ObjectType.Package;
+        final Predicate<ModelObject> objectFilter = o -> o.getParent() == null && o.getObjectType() != ObjectType.Package;
 //        final Predicate<Connector> connectorFilter = c -> c.getType() != ConnectorType.Realisation;
         final Predicate<Connector> connectorFilter = c -> true;
 
-        final ListenableDirectedGraph<Object, Connector> graph = transformer.transformToGraph(objectFilter, connectorFilter);
+        final ListenableDirectedGraph<ModelObject, Connector> graph = transformer.transformToGraph(objectFilter, connectorFilter);
 
-        StrongConnectivityInspector<Object, Connector> inspector = new StrongConnectivityInspector<>(graph);
+        StrongConnectivityInspector<ModelObject, Connector> inspector = new StrongConnectivityInspector<>(graph);
         inspector.stronglyConnectedSets().forEach(scc -> System.out.println("SCC: " + scc));
 
         // Display the graph in a Swing panel
@@ -56,7 +79,7 @@ public class DemoApplication {
     }
 
     private void findByStereotype() {
-        for (Object o : or.findByStereotype("SystemDef")) {
+        for (ModelObject o : or.findByStereotype("SystemDef")) {
             System.out.println(o);
             System.out.println(o.getTaggedValuesMap());
         }
@@ -69,7 +92,7 @@ public class DemoApplication {
     private void printAllObjects() {
         for (Package p : pr.getAll()) {
             System.out.println(p);
-            for (Object o : p.getObjects()) {
+            for (ModelObject o : p.getObjects()) {
                 System.out.println("\t" + o);
 
                 if (o.getParent() != null) {
@@ -114,7 +137,7 @@ public class DemoApplication {
 
         for (Diagram d : dr.getAll()) {
             System.out.println(d);
-            for (Object o : d.getObjects()) {
+            for (ModelObject o : d.getObjects()) {
                 System.out.println("\t" + o);
             }
             for (Connector c : d.getConnectors()) {
