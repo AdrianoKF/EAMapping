@@ -1,32 +1,17 @@
 package model;
 
-import java.util.Set;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-
 import model.datatypes.Scope;
 
-@Entity
-@Table(name = "t_attribute")
+import java.util.Set;
+
 public class Attribute {
-    @Id private Integer id;
+    private Integer id;
     private String name;
     private String type;
-    @Enumerated(EnumType.STRING) private Scope scope;
-
-    @ManyToOne @JoinColumn(name = "object_id") private ModelObject object;
-
-    @Column(name = "`Default`") private String defaultValue;
-
-    @OneToMany(mappedBy = "attribute") private Set<AttributeTag> taggedValues;
+    private Scope scope;
+    private ModelObject object;
+    private String defaultValue;
+    private Set<AttributeTag> taggedValues;
 
     public Integer getId() {
         return id;

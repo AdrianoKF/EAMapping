@@ -2,40 +2,14 @@ package model;
 
 import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
-
-@Entity
-@Table(name = "t_diagram")
 public class Diagram {
-    @Id @Column(name = "diagram_id") private Integer diagramId;
-    @ManyToOne @JoinColumn(name = "package_id") private Package pkg;
-    @ManyToOne @NotFound(action = NotFoundAction.IGNORE) @JoinColumn(name = "parentid") private Diagram parent;
-    @Column(name = "diagram_type") private String diagramType;
+    private Integer diagramId;
+    private Package pkg;
+    private Diagram parent;
+    private String diagramType;
     private String name;
     private String notes;
-
-    @ManyToMany
-    @JoinTable(
-            name = "t_diagramobjects",
-            inverseJoinColumns = @JoinColumn(name = "object_id"),
-            joinColumns = @JoinColumn(name = "diagram_id"))
     private Set<ModelObject> objects;
-
-    @ManyToMany
-    @JoinTable(
-            name = "t_diagramlinks",
-            inverseJoinColumns = @JoinColumn(name = "connectorid"),
-            joinColumns = @JoinColumn(name = "diagramid"))
     private Set<Connector> connectors;
 
     public Integer getDiagramId() {

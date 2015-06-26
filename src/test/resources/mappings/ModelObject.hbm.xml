@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+                 version="2.0">
+    <entity class="model.ModelObject">
+        <table name="t_object"/>
+        <attributes>
+            <id name="objectId">
+                <column name="object_id" />
+            </id>
+            <basic name="name" />
+            <basic name="note" />
+            <basic name="scope">
+                <enumerated>STRING</enumerated>
+            </basic>
+            <basic name="objectType">
+                <column name="object_type" />
+                <enumerated>STRING</enumerated>
+            </basic>
+            <basic name="stereotype" />
+            <basic name="isAbstract">
+                <column name="abstract" />
+            </basic>
+
+            <many-to-one name="pkg">
+                <join-column name="package_id" />
+            </many-to-one>
+            <many-to-one name="parent">
+                <join-column name="parentid" />
+            </many-to-one>
+
+            <one-to-many name="attributes" mapped-by="object" />
+            <one-to-many name="operations" mapped-by="object" />
+            <one-to-many name="taggedValues" mapped-by="object" />
+            <one-to-many name="incomingConnectors" mapped-by="sourceObject" />
+            <one-to-many name="outgoingConnectors" mapped-by="destObject" />
+
+            <transient name="taggedValuesMap" />
+            <transient name="predecessors" />
+            <transient name="successors" />
+        </attributes>
+    </entity>
+</entity-mappings>

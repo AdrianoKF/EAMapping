@@ -1,16 +1,8 @@
 package model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-
-@Entity
-@Table(name = "t_attributetag")
 public class AttributeTag {
-    @Id private Integer propertyId;
-    @ManyToOne @JoinColumn(name = "elementid") private Attribute attribute;
+    private Integer propertyId;
+    private Attribute attribute;
     private String property;
     private String value;
     private String notes;

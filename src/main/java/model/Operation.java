@@ -1,32 +1,20 @@
 package model;
 
-import java.util.Set;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-
 import model.datatypes.Scope;
 
-@Entity
-@Table(name = "t_operation")
+import java.util.Set;
+
 public class Operation {
-    @Id @Column(name = "operationid") private Integer operationId;
-    @ManyToOne @JoinColumn(name = "object_id") private ModelObject object;
+    private Integer operationId;
+    private ModelObject object;
     private String name;
-    @Column(name = "behaviour") private String behavior;
+    private String behavior;
     private String notes;
-    @Enumerated(EnumType.STRING) private Scope scope;
+    private Scope scope;
     private String type;
-    @Column(name = "isstatic") private Boolean isStatic;
-    @Column(name = "abstract") private Boolean isAbstract;
-    @OneToMany(mappedBy = "operation") private Set<OperationParameter> parameters;
+    private Boolean isStatic;
+    private Boolean isAbstract;
+    private Set<OperationParameter> parameters;
 
     public Integer getOperationId() {
         return operationId;
@@ -84,19 +72,19 @@ public class Operation {
         this.type = type;
     }
 
-    public Boolean isStatic() {
+    public Boolean getIsStatic() {
         return isStatic;
     }
 
-    public void setStatic(Boolean isStatic) {
+    public void setIsStatic(Boolean isStatic) {
         this.isStatic = isStatic;
     }
 
-    public Boolean isAbstract() {
+    public Boolean getIsAbstract() {
         return isAbstract;
     }
 
-    public void setAbstract(Boolean isAbstract) {
+    public void setIsAbstract(Boolean isAbstract) {
         this.isAbstract = isAbstract;
     }
 

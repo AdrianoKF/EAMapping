@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+                 version="2.0">
+    <entity class="model.Package">
+        <table name="t_package"></table>
+        <attributes>
+            <id name="packageId">
+                <column name="package_id"/>
+            </id>
+            <basic name="name" />
+            <basic name="version" />
+            <basic name="notes" />
+            <basic name="namespace" />
+
+            <many-to-one name="parent" fetch="LAZY">
+                <join-column name="parent_id" />
+            </many-to-one>
+
+            <one-to-many name="objects" mapped-by="pkg" />
+        </attributes>
+    </entity>
+</entity-mappings>

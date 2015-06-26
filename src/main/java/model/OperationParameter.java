@@ -1,30 +1,19 @@
 package model;
 
+import model.datatypes.ParameterDirection;
+
 import java.io.Serializable;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-
-import model.datatypes.ParameterKind;
-
-@Entity
-@Table(name = "t_operationparams")
 public class OperationParameter implements Serializable {
     private static final long serialVersionUID = 4411925204049611412L;
 
-    @Id @ManyToOne @JoinColumn(name = "operationid") private Operation operation;
-    @Id private String name;
+    private Operation operation;
+    private String name;
     private String type;
-    @Column(name = "`Default`") private String defaultValue;
+    private String defaultValue;
     private String notes;
-    @Column(name = "const") private boolean isConst;
-    @Enumerated(EnumType.STRING) @Column(name = "kind") private ParameterKind direction;
+    private boolean isConst;
+    private ParameterDirection direction;
 
     public Operation getOperation() {
         return operation;
@@ -66,12 +55,20 @@ public class OperationParameter implements Serializable {
         this.notes = notes;
     }
 
-    public boolean isConst() {
+    public boolean getIsConst() {
         return isConst;
     }
 
-    public void setConst(boolean isConst) {
+    public void setIsConst(boolean isConst) {
         this.isConst = isConst;
+    }
+
+    public ParameterDirection getDirection() {
+        return direction;
+    }
+
+    public void setDirection(ParameterDirection direction) {
+        this.direction = direction;
     }
 
     @Override
@@ -92,7 +89,7 @@ public class OperationParameter implements Serializable {
     }
 
     @Override
-    public boolean equals(java.lang.Object obj) {
+    public boolean equals(Object obj) {
         if (this == obj) {
             return true;
         }

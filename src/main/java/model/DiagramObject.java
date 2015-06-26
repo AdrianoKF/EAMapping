@@ -1,25 +1,16 @@
 package model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-
-@Entity
-@Table(name = "t_diagramobjects")
 public class DiagramObject {
-    @Id @Column(name = "instance_id") private Integer instaceId;
-    @ManyToOne @JoinColumn(name = "diagram_id") private Diagram diagram;
-    @ManyToOne @JoinColumn(name = "object_id") private ModelObject object;
+    private Integer instanceId;
+    private Diagram diagram;
+    private ModelObject object;
 
-    public Integer getInstaceId() {
-        return instaceId;
+    public Integer getInstanceId() {
+        return instanceId;
     }
 
-    public void setInstaceId(Integer instaceId) {
-        this.instaceId = instaceId;
+    public void setInstanceId(Integer instanceId) {
+        this.instanceId = instanceId;
     }
 
     public Diagram getDiagram() {

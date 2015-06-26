@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+                 version="2.0">
+    <entity class="model.Connector">
+        <table name="t_connector" />
+        <attributes>
+            <id name="connectorId">
+                <column name="connector_id" />
+            </id>
+            <basic name="name" />
+            <basic name="stereotype" />
+            <basic name="type">
+                <column name="connector_type" />
+                <enumerated>STRING</enumerated>
+            </basic>
+            <basic name="direction" />
+            <basic name="notes" />
+            <basic name="sourceRole" />
+            <basic name="destRole" />
+            <basic name="sourceAccess">
+                <enumerated>STRING</enumerated>
+            </basic>
+            <basic name="destAccess">
+                <enumerated>STRING</enumerated>
+            </basic>
+            <basic name="sourceAggregationType">
+                <column name="sourceisaggregate" />
+                <enumerated>ORDINAL</enumerated>
+            </basic>
+            <basic name="destAggregationType">
+                <column name="destisaggregate" />
+                <enumerated>ORDINAL</enumerated>
+            </basic>
+
+            <many-to-one name="sourceObject">
+                <join-column name="start_object_id"></join-column>
+            </many-to-one>
+            <many-to-one name="destObject">
+                <join-column name="end_object_id"></join-column>
+            </many-to-one>
+        </attributes>
+    </entity>
+</entity-mappings>

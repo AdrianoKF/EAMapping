@@ -1,30 +1,18 @@
 package model;
 
-import java.util.Set;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
-@Entity
-@Table(name = "t_package")
-public class Package {
-    @Id @Column(name = "package_id") private Integer packageId;
+import java.util.Set;
 
+public class Package {
+    private Integer packageId;
     private String name;
     private String version;
     private String notes;
     private String namespace;
-
-    @ManyToOne @NotFound(action = NotFoundAction.IGNORE) @JoinColumn(name = "parent_id") private Package parent;
-    @OneToMany(mappedBy = "pkg") private Set<ModelObject> objects;
+    private Package parent;
+    private Set<ModelObject> objects;
 
     public Integer getPackageId() {
         return packageId;

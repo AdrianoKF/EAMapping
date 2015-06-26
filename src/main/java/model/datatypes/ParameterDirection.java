@@ -1,6 +1,6 @@
 package model.datatypes;
 
-public enum ParameterKind {
+public enum ParameterDirection {
     in,
     out,
     inout

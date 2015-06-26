@@ -2,36 +2,28 @@ package model;
 
 import model.datatypes.ObjectType;
 import model.datatypes.Scope;
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
 
-import javax.persistence.*;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
-@Entity
-@Table(name = "t_object")
 public class ModelObject {
-    @Id @Column(name = "object_id") private Integer objectId;
-    @ManyToOne @JoinColumn(name = "package_id") private Package pkg;
-    @ManyToOne @NotFound(action = NotFoundAction.IGNORE) @JoinColumn(name = "parentid") private ModelObject parent;
+    private Integer objectId;
+    private Package pkg;
+    private ModelObject parent;
     private String name;
     private String note;
-    @Enumerated(EnumType.STRING) private Scope scope;
-    @Column(name = "object_type") @Enumerated(EnumType.STRING) private ObjectType objectType;
+    private Scope scope;
+    private ObjectType objectType;
     private String stereotype;
-    @Column(name = "abstract") private Boolean isAbstract;
-
-    @OneToMany(mappedBy = "object") private Set<Attribute> attributes;
-    @OneToMany(mappedBy = "object") private Set<ObjectProperty> taggedValues;
-
-    @OneToMany(mappedBy = "sourceObject") private Set<Connector> outgoingConnectors;
-    @OneToMany(mappedBy = "destObject") private Set<Connector> incomingConnectors;
-
-    @OneToMany(mappedBy = "object") private Set<Operation> operations;
+    private Boolean isAbstract;
+    private Set<Attribute> attributes;
+    private Set<ObjectProperty> taggedValues;
+    private Set<Connector> outgoingConnectors;
+    private Set<Connector> incomingConnectors;
+    private Set<Operation> operations;
 
     public Integer getObjectId() {
         return objectId;
@@ -69,7 +61,7 @@ public class ModelObject {
         return note;
     }
 
-    public void setNotes(String note) {
+    public void setNote(String note) {
         this.note = note;
     }
 
@@ -97,11 +89,11 @@ public class ModelObject {
         this.stereotype = stereotype;
     }
 
-    public boolean isAbstract() {
+    public boolean getIsAbstract() {
         return isAbstract;
     }
 
-    public void setAbstract(boolean isAbstract) {
+    public void setIsAbstract(boolean isAbstract) {
         this.isAbstract = isAbstract;
     }
 
