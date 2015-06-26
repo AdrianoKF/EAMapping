@@ -69,31 +69,31 @@ public class FaultTreeMapper {
         final Collection<ModelObject> succ = o.getSuccessors();
 
         if (node instanceof BasicEvent && !pred.isEmpty()) {
-            throw new MalformedTreeException("Basic events may not have any predecessors. Offending element: " + node);
+            throw new MalformedTreeException("Basic events may not have any predecessors.\nOffending element: " + node);
         }
 
         if (node instanceof Gate && pred.isEmpty()) {
-            throw new MalformedTreeException("Gates need at least one incoming event. Offending element: " + node);
+            throw new MalformedTreeException("Gates need at least one incoming event.\nOffending element: " + node);
         }
 
         if (node instanceof Gate && succ.isEmpty()) {
-            throw new MalformedTreeException("Gates need exactly one resulting event. Offending element: " + node);
+            throw new MalformedTreeException("Gates need exactly one resulting event.\nOffending element: " + node);
         }
 
         if (node instanceof Gate && succ.size() > 1) {
             throw new MalformedTreeException(
-                    String.format("Gates cannot have more than one resulting event. Offending element %s with outgoing events %s",
+                    String.format("Gates cannot have more than one resulting event.\nOffending element %s\nwith outgoing events %s",
                             node, succ));
         }
 
         for (ModelObject p : pred) {
             if (node instanceof Event && !isGate(p)) {
                 throw new MalformedTreeException(
-                        String.format("Events may only have gates as predecessors. Offending element %s with predecessor %s",
+                        String.format("Events may only have gates as predecessors.\nOffending element %s\nwith predecessor %s",
                                 node, p));
             } else if (node instanceof Gate && !isEvent(p)) {
                 throw new MalformedTreeException(
-                        String.format("Gates may only have events as predecessors`. Offending element %s with predecessor %s",
+                        String.format("Gates may only have events as predecessors.\nOffending element %s\nwith predecessor %s",
                                 node, p));
             }
 
