@@ -1,12 +1,11 @@
 package analysis.faulttrees.mapper;
 
-import analysis.faulttrees.mapper.exceptions.MalformedTreeException;
-import model.ModelObject;
-
-import org.dslab.mdsd4sil.faulttrees.*;
-
-import javax.enterprise.inject.Model;
 import java.util.Collection;
+
+import org.dslab.mdsd4sil.metamodel.emf.faulttrees.*;
+import org.dslab.mdsd4sil.metamodel.enterprisearchitect.ModelObject;
+
+import analysis.faulttrees.mapper.exceptions.MalformedTreeException;
 
 public class FaultTreeMapper {
     public enum GateStereotype {

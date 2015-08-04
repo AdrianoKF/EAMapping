@@ -1,13 +1,16 @@
 package app.gui;
 
-import model.Connector;
-import model.ModelObject;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.HeadlessException;
+
+import javax.swing.JFrame;
+
+import org.dslab.mdsd4sil.metamodel.enterprisearchitect.Connector;
+import org.dslab.mdsd4sil.metamodel.enterprisearchitect.ModelObject;
 import org.jgraph.JGraph;
 import org.jgrapht.ext.JGraphModelAdapter;
 import org.jgrapht.graph.ListenableDirectedGraph;
-
-import javax.swing.*;
-import java.awt.*;
 
 /**
  * Created by Adriano on 21.05.2015.
