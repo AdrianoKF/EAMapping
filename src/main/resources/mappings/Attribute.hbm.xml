@@ -1,22 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
-                 version="2.0">
-    <entity class="model.Attribute">
-        <table name="t_attribute"></table>
-        <attributes>
-            <id name="id"></id>
-            <basic name="name"></basic>
-            <basic name="type"></basic>
-            <basic name="scope">
-                <enumerated>STRING</enumerated>
-            </basic>
-            <basic name="defaultValue">
-                <column name="`Default`"></column>
-            </basic>
-            <many-to-one name="object">
-                <join-column name="object_id"></join-column>
-            </many-to-one>
-            <one-to-many name="taggedValues" mapped-by="attribute"></one-to-many>
-        </attributes>
-    </entity>
-</entity-mappings>
+<!-- <entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm" -->
+<!-- version="2.0"> -->
+<!-- <entity class="org.dslab.mdsd4sil.metamodel.enterprisearchitect.Attribute"> -->
+<!-- <table name="t_attribute" /> -->
+<!-- <attributes> -->
+<!-- <id name="id" /> -->
+
+<!-- <basic name="name" /> -->
+<!-- <basic name="type" /> -->
+<!-- <basic name="scope"> -->
+<!-- </basic> -->
+<!-- <basic name="defaultValue"> -->
+<!-- <column name="`Default`" /> -->
+<!-- </basic> -->
+<!-- <many-to-one name="object"> -->
+<!-- <join-column name="object_id" /> -->
+<!-- </many-to-one> -->
+<!-- <one-to-many name="taggedValues" mapped-by="attribute" /> -->
+<!-- </attributes> -->
+<!-- </entity> -->
+<!-- </entity-mappings> -->
+
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.dslab.mdsd4sil.metamodel.enterprisearchitect">
+	<class name="Attribute" table="t_attribute">
+		<id name="id" />
+
+		<property name="name" />
+		<property name="type" />
+		<property name="scope" column="scope" />
+		<property name="defaultValue" column="`Default`" />
+
+		<many-to-one name="object" column="object_id" />
+		<set name="taggedValues" inverse="true">
+			<key column="elementid" />
+			<one-to-many class="AttributeTag" />
+		</set>
+	</class>
+</hibernate-mapping>

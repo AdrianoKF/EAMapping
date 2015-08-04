@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
                  version="2.0">
-    <entity class="model.AttributeTag">
+    <entity class="org.dslab.mdsd4sil.metamodel.enterprisearchitect.AttributeTag">
         <table name="t_attributetag"></table>
         <attributes>
             <id name="propertyId"></id>
