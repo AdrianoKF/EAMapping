@@ -1,4 +1,4 @@
-package dao;
+package util.hibernate;
 
 import javax.enterprise.inject.Disposes;
 import javax.enterprise.inject.Produces;
