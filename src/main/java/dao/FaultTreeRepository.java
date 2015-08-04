@@ -1,7 +1,7 @@
 package dao;
 
-import model.Diagram;
-import model.ModelObject;
+import org.dslab.mdsd4sil.metamodel.enterprisearchitect.Diagram;
+import org.dslab.mdsd4sil.metamodel.enterprisearchitect.ModelObject;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -16,12 +16,15 @@ public class FaultTreeRepository {
     public Collection<ModelObject> findRootNodes(Diagram d) {
         return em
                 .createQuery(
-                        "SELECT o from Diagram d inner join d.objects o " +
-                        "WHERE d = :diagram " +
-                        "AND not exists ( " +
-                            "select 1 from Connector c " +
-                            "where c.sourceObject = o " +
-                        ")",
+                        "SELECT o.object FROM Diagram d INNER JOIN d.objects o " +
+                                "WHERE d = :diagram " +
+                                "AND NOT EXISTS ( " +
+                                "  SELECT 1 FROM Connector c " +
+                                "  WHERE c.sourceObject = o.object " +
+                                ") " +
+                                "AND NOT EXISTS (" +
+                                "  SELECT 1 FROM DiagramConnector c" +
+                                ")",
                         ModelObject.class)
                 .setParameter("diagram", d)
                 .getResultList();

@@ -1,10 +1,9 @@
 package dao;
 
-import model.Diagram;
+import org.dslab.mdsd4sil.metamodel.enterprisearchitect.Diagram;
 
 public class DiagramRepository extends
         GenericHibernateRepository<Diagram, Integer> {
-
     public Diagram findByName(String name) {
         return em
                 .createQuery(
