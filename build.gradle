@@ -46,7 +46,7 @@ dependencies {
     compile 'com.mchange:c3p0:0.9.5.1'
     compile 'org.postgresql:postgresql:9.4-1201-jdbc41'
 
-    compile 'org.jboss.weld.se:weld-se-core:3.0.0.Alpha11'
+    compile 'org.jboss.weld.se:weld-se-core:3.0.0.Alpha12'
     compile 'org.jboss:jandex:2.0.0.Beta4'
 
     compile 'org.slf4j:slf4j-api:[1.7.12,)'
@@ -57,7 +57,7 @@ dependencies {
     compile 'org.jgrapht:jgrapht-ext:0.9+'
     compile 'jgraph:jgraph:5.13.0.0'
 
-    def ecoreVersion = '2.10.1'
+    def ecoreVersion = '2.11.0-v20150123-0347'
     compile "org.eclipse.emf:org.eclipse.emf.ecore:$ecoreVersion"
     compile "org.eclipse.emf:org.eclipse.emf.ecore.xmi:$ecoreVersion"
     compile "org.eclipse.emf:org.eclipse.emf.common:$ecoreVersion"
@@ -76,7 +76,7 @@ uploadArchives {
     repositories { flatDir { dirs 'repos' } }
 }
 
-mainClassName = 'app.Main'
+mainClassName = 'app.Bootstrap'
 
 test {
     systemProperties['persistenceUnit'] = 'testPersistenceUnit'

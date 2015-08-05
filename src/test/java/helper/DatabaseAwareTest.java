@@ -1,6 +1,6 @@
 package helper;
 
-import app.Main;
+import app.Bootstrap;
 import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
 import org.hibernate.Session;
@@ -17,7 +17,7 @@ import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-@AdditionalClasspaths(Main.class)
+@AdditionalClasspaths(Bootstrap.class)
 public abstract class DatabaseAwareTest {
     @Inject
     protected EntityManager em;
