@@ -1,43 +1,68 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
-                 version="2.0">
-    <entity class="model.Connector">
-        <table name="t_connector" />
-        <attributes>
-            <id name="connectorId">
-                <column name="connector_id" />
-            </id>
-            <basic name="name" />
-            <basic name="stereotype" />
-            <basic name="type">
-                <column name="connector_type" />
-                <enumerated>STRING</enumerated>
-            </basic>
-            <basic name="direction" />
-            <basic name="notes" />
-            <basic name="sourceRole" />
-            <basic name="destRole" />
-            <basic name="sourceAccess">
-                <enumerated>STRING</enumerated>
-            </basic>
-            <basic name="destAccess">
-                <enumerated>STRING</enumerated>
-            </basic>
-            <basic name="sourceAggregationType">
-                <column name="sourceisaggregate" />
-                <enumerated>ORDINAL</enumerated>
-            </basic>
-            <basic name="destAggregationType">
-                <column name="destisaggregate" />
-                <enumerated>ORDINAL</enumerated>
-            </basic>
+<!--<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"-->
+<!--version="2.0">-->
+<!--<entity class="org.dslab.mdsd4sil.metamodel.enterprisearchitect.Connector">-->
+<!--<table name="t_connector"/>-->
+<!--<attributes>-->
+<!--<id name="connectorId">-->
+<!--<column name="connector_id"/>-->
+<!--</id>-->
+<!--<basic name="name"/>-->
+<!--<basic name="stereotype"/>-->
+<!--<basic name="type">-->
+<!--<column name="connector_type"/>-->
+<!--<enumerated>STRING</enumerated>-->
+<!--</basic>-->
+<!--<basic name="direction"/>-->
+<!--<basic name="notes"/>-->
+<!--<basic name="sourceRole"/>-->
+<!--<basic name="destRole"/>-->
+<!--<basic name="sourceAccess">-->
+<!--<enumerated>STRING</enumerated>-->
+<!--</basic>-->
+<!--<basic name="destAccess">-->
+<!--<enumerated>STRING</enumerated>-->
+<!--</basic>-->
+<!--<basic name="sourceAggregationType">-->
+<!--<column name="sourceisaggregate"/>-->
+<!--<enumerated>ORDINAL</enumerated>-->
+<!--</basic>-->
+<!--<basic name="destAggregationType">-->
+<!--<column name="destisaggregate"/>-->
+<!--<enumerated>ORDINAL</enumerated>-->
+<!--</basic>-->
 
-            <many-to-one name="sourceObject">
-                <join-column name="start_object_id"></join-column>
-            </many-to-one>
-            <many-to-one name="destObject">
-                <join-column name="end_object_id"></join-column>
-            </many-to-one>
-        </attributes>
-    </entity>
-</entity-mappings>
+<!--<many-to-one name="sourceObject">-->
+<!--<join-column name="start_object_id"></join-column>-->
+<!--</many-to-one>-->
+<!--<many-to-one name="destObject">-->
+<!--<join-column name="end_object_id"></join-column>-->
+<!--</many-to-one>-->
+<!--</attributes>-->
+<!--</entity>-->
+<!--</entity-mappings>-->
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.dslab.mdsd4sil.metamodel.enterprisearchitect">
+    <class name="Connector" table="t_connector">
+        <id name="connectorId" column="connector_id"/>
+
+        <property name="name"/>
+        <property name="stereotype"/>
+        <property name="type" column="connector_type" type="ConnectorTypeEnumType"/>
+        <property name="direction"/>
+        <property name="notes"/>
+        <property name="sourceRole"/>
+        <property name="destRole"/>
+        <property name="sourceAccess" type="ScopeEnumType"/>
+        <property name="destAccess" type="ScopeEnumType"/>
+        <property name="sourceAggregationType" column="sourceisaggregate" type="AggregationTypeEnumType"/>
+        <property name="destAggregationType" column="destisaggregate" type="AggregationTypeEnumType"/>
+
+        <many-to-one name="sourceObject" column="start_object_id"/>
+        <many-to-one name="destObject" column="end_object_id"/>
+    </class>
+</hibernate-mapping>

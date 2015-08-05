@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
                  version="2.0">
-    <entity class="model.ObjectProperty">
+    <entity class="org.dslab.mdsd4sil.metamodel.enterprisearchitect.ObjectProperty">
         <table name="t_objectproperties"></table>
         <attributes>
-            <id name="propertyId" />
-            <basic name="property" />
-            <basic name="value" />
-            <basic name="notes" />
+            <id name="propertyId">
+                <column name="propertyid"/>
+            </id>
+            <basic name="property"/>
+            <basic name="value"/>
+            <basic name="notes"/>
 
             <many-to-one name="object">
                 <join-column name="object_id"></join-column>
