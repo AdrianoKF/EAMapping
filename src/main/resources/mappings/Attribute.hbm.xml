@@ -27,18 +27,18 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping package="org.dslab.mdsd4sil.metamodel.enterprisearchitect">
-	<class name="Attribute" table="t_attribute">
-		<id name="id" />
+    <class name="Attribute" table="t_attribute">
+        <id name="id"/>
 
-		<property name="name" />
-		<property name="type" />
-		<property name="scope" column="scope" />
-		<property name="defaultValue" column="`Default`" />
+        <property name="name"/>
+        <property name="type"/>
+        <property name="scope" column="scope"/>
+        <property name="defaultValue" column="`Default`"/>
 
-		<many-to-one name="object" column="object_id" />
-		<set name="taggedValues" inverse="true">
-			<key column="elementid" />
-			<one-to-many class="AttributeTag" />
-		</set>
-	</class>
+        <many-to-one name="object" column="object_id"/>
+        <set name="taggedValues" inverse="true">
+            <key column="elementid"/>
+            <one-to-many class="AttributeTag"/>
+        </set>
+    </class>
 </hibernate-mapping>

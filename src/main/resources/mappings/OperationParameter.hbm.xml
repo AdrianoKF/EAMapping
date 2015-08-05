@@ -5,19 +5,19 @@
         <table name="t_operationparams"></table>
         <!-- TODO: <id-class class="OperationParameterId" />-->
         <attributes>
-            <id name="operation" />
-            <id name="name" />
+            <id name="operation"/>
+            <id name="name"/>
 
-            <basic name="type" />
+            <basic name="type"/>
             <basic name="defaultValue">
-                <column name="`Default`" />
+                <column name="`Default`"/>
             </basic>
             <basic name="notes"></basic>
             <basic name="isConst">
-                <column name="const" />
+                <column name="const"/>
             </basic>
             <basic name="direction">
-                <column name="kind" />
+                <column name="kind"/>
                 <enumerated>STRING</enumerated>
             </basic>
 

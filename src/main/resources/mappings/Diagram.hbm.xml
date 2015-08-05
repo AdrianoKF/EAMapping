@@ -5,36 +5,36 @@
         <table name="t_diagram"/>
         <attributes>
             <id name="diagramId">
-                <column name="diagram_id" />
+                <column name="diagram_id"/>
             </id>
-            <basic name="name" />
-            <basic name="notes" />
+            <basic name="name"/>
+            <basic name="notes"/>
             <basic name="diagramType">
                 <column name="diagram_type"/>
             </basic>
 
             <many-to-one name="pkg">
-                <join-column name="package_id" />
+                <join-column name="package_id"/>
             </many-to-one>
 
             <many-to-one name="parent">
-                <join-column name="parentid" />
+                <join-column name="parentid"/>
             </many-to-one>
 
             <!--<many-to-many name="objects">-->
-                <!--<join-table name="t_diagramobjects">-->
-                    <!--<join-column name="diagram_id" />-->
-                    <!--<inverse-join-column name="object_id" />-->
-                <!--</join-table>-->
+            <!--<join-table name="t_diagramobjects">-->
+            <!--<join-column name="diagram_id" />-->
+            <!--<inverse-join-column name="object_id" />-->
+            <!--</join-table>-->
             <!--</many-to-many>-->
-            <one-to-many name="objects" mapped-by="diagram" />
-            <one-to-many name="connectors" mapped-by="diagram" />
+            <one-to-many name="objects" mapped-by="diagram"/>
+            <one-to-many name="connectors" mapped-by="diagram"/>
 
             <!--<many-to-many name="connectors">-->
-                <!--<join-table name="t_diagramlinks">-->
-                    <!--<join-column name="diagramid" />-->
-                    <!--<inverse-join-column name="connectorid" />-->
-                <!--</join-table>-->
+            <!--<join-table name="t_diagramlinks">-->
+            <!--<join-column name="diagramid" />-->
+            <!--<inverse-join-column name="connectorid" />-->
+            <!--</join-table>-->
             <!--</many-to-many>-->
         </attributes>
     </entity>

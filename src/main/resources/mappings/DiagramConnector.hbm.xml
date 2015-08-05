@@ -2,10 +2,10 @@
 <entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
                  version="2.0">
     <entity class="org.dslab.mdsd4sil.metamodel.enterprisearchitect.DiagramConnector">
-        <table name="t_diagramlinks" />
+        <table name="t_diagramlinks"/>
         <attributes>
             <id name="instanceId">
-            	<column name="instance_id" />
+                <column name="instance_id"/>
             </id>
 
             <many-to-one name="diagram">
@@ -13,7 +13,7 @@
             </many-to-one>
 
             <one-to-one name="connector">
-                <join-column name="connectorid" />
+                <join-column name="connectorid"/>
             </one-to-one>
         </attributes>
     </entity>

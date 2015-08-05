@@ -4,27 +4,27 @@
     <entity class="org.dslab.mdsd4sil.metamodel.enterprisearchitect.Operation">
         <table name="t_operation"></table>
         <attributes>
-            <id name="operationId" />
-            <basic name="name" />
+            <id name="operationId"/>
+            <basic name="name"/>
             <basic name="behavior">
-                <column name="behaviour" />
+                <column name="behaviour"/>
             </basic>
-            <basic name="type" />
+            <basic name="type"/>
             <basic name="scope">
                 <enumerated>STRING</enumerated>
             </basic>
             <basic name="isStatic">
-                <column name="isstatic" />
+                <column name="isstatic"/>
             </basic>
             <basic name="isAbstract">
-                <column name="abstract" />
+                <column name="abstract"/>
             </basic>
 
             <many-to-one name="object">
                 <join-column name="object_id"></join-column>
             </many-to-one>
 
-            <one-to-many name="parameters" mapped-by="operation" />
+            <one-to-many name="parameters" mapped-by="operation"/>
         </attributes>
     </entity>
 </entity-mappings>
