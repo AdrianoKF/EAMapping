@@ -1,3 +1,9 @@
+-- Dummy entities to ensure referential integrity
+INSERT INTO t_package VALUES (0, 'Dummy', NULL, '2015-06-26 10:27:12.309', '2015-06-26 10:27:12.309', NULL, NULL, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO t_object VALUES (0, NULL, 0, NULL, NULL, NULL, '1.0', NULL, 0, NULL, 0, '2', 0, NULL, 0, 0, 0, 0, 0, '2015-06-26 11:18:04.775', '2015-06-26 11:18:04.775', NULL, '0', 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Private', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO t_diagram VALUES (0, 0, NULL, NULL, NULL, '1.0', NULL, 0, NULL, NULL, 1, 1, 1, 'P', 0, 0, 100, '2015-06-26', '2015-06-26', NULL, 1, 1, 1, NULL, 0, NULL, NULL, NULL, NULL);
+
+
 INSERT INTO t_attribute VALUES (23, '_image', 'Public', NULL, 'Not Specified', 0, 0, 0, 0, '1', '1', NULL, NULL, '0', 1, 0, NULL, NULL, NULL, 0, 0, NULL, NULL, '<Image type="EAShapeScript 1.0" xmlns:dt="urn:schemas-microsoft-com:datatypes" dt:dt="bin.base64">UEsDBBQAAAAIAFaFZUXCRQSnywAAABwCAAAHABEAc3RyLmRhdFVUDQAHY1NaVGNTWlRjU1pU
 jZDNCoJQFIRnW9A7RKuCgn6IFtGioF1RZC8gqRiRhVmE0bv36dVEKmjhvecw38zIvciXrbNc
 1XVk2ivQQzVVVZHHdkdxNNUlZXaKtIGKUE44JnwNtlBX1IbGmTNCPeMKcPjMoVakeaS4aMbX

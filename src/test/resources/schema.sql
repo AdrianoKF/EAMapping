@@ -755,13 +755,13 @@ CREATE TABLE t_objectproperties (
 	PropertyID  INTEGER DEFAULT NEXTVAL('"propertyid_seq"') NOT NULL PRIMARY KEY,
 	Object_ID   INTEGER DEFAULT 0,
 	Property    VARCHAR(255),
-	Value       VARCHAR(255),
+	"value"       VARCHAR(255),
 	Notes       TEXT,
 	ea_guid     VARCHAR(40)
 );
 
 CREATE INDEX ix_objectproperties_object_id ON t_objectproperties (Object_ID);
-CREATE INDEX ix_objectproperties_value ON t_objectproperties (Value);
+CREATE INDEX ix_objectproperties_value ON t_objectproperties ("value");
 
 ----------------------------------------------
 -- Table structure for t_objectrequires
