@@ -32,7 +32,7 @@
 
         <property name="name"/>
         <property name="type"/>
-        <property name="scope" column="scope"/>
+        <property name="scope" column="scope" type="ScopeEnumType"/>
         <property name="defaultValue" column="`Default`"/>
 
         <many-to-one name="object" column="object_id"/>

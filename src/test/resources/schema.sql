@@ -92,13 +92,13 @@ CREATE TABLE t_attributetag (
    PropertyID	INTEGER DEFAULT NEXTVAL('"propertyid_seq"') NOT NULL PRIMARY KEY,
    ElementID	INTEGER,
    Property		VARCHAR(255),
-   VALUE		VARCHAR(255),
+   "value"		VARCHAR(255),
    NOTES		TEXT,
    ea_guid		VARCHAR(40) 
 );
 
 CREATE INDEX ix_attributetag_elementid ON t_attributetag (ElementID);
-CREATE INDEX ix_attributetag_value ON t_attributetag (VALUE);
+CREATE INDEX ix_attributetag_value ON t_attributetag ("value");
 
 
 ----------------------------------------------
