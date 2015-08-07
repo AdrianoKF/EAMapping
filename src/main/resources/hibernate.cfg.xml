@@ -14,6 +14,7 @@
         <property name="hibernate.c3p0.max_statements">50</property>
         <property name="hibernate.c3p0.min_size">4</property>
         <property name="hibernate.c3p0.timeout">300</property>
+        <property name="hibernate.auto_quote_keyword">true</property>
 
         <mapping resource="mappings/_typedefs.hbm.xml"/>
     </session-factory>
