@@ -8,23 +8,23 @@
         <param name="useNamed">false</param>
     </typedef>
 
-    <typedef name="ConnectorDirectionEnumType" class="util.hibernate.PersistentEnumUserType">
+    <typedef name="ConnectorDirectionEnumType" class="org.dslab.mdsd4sil.util.hibernate.PersistentEnumUserType">
         <param name="enumClass">org.dslab.mdsd4sil.metamodel.enterprisearchitect.datatypes.ConnectorDirection</param>
     </typedef>
 
-    <typedef name="ConnectorTypeEnumType" class="util.hibernate.PersistentEnumUserType">
+    <typedef name="ConnectorTypeEnumType" class="org.dslab.mdsd4sil.util.hibernate.PersistentEnumUserType">
         <param name="enumClass">org.dslab.mdsd4sil.metamodel.enterprisearchitect.datatypes.ConnectorType</param>
     </typedef>
 
-    <typedef name="ObjectTypeEnumType" class="util.hibernate.PersistentEnumUserType">
+    <typedef name="ObjectTypeEnumType" class="org.dslab.mdsd4sil.util.hibernate.PersistentEnumUserType">
         <param name="enumClass">org.dslab.mdsd4sil.metamodel.enterprisearchitect.datatypes.ObjectType</param>
     </typedef>
 
-    <typedef name="ParameterKindEnumType" class="util.hibernate.PersistentEnumUserType">
+    <typedef name="ParameterKindEnumType" class="org.dslab.mdsd4sil.util.hibernate.PersistentEnumUserType">
         <param name="enumClass">org.dslab.mdsd4sil.metamodel.enterprisearchitect.datatypes.ParameterKind</param>
     </typedef>
 
-    <typedef name="ScopeEnumType" class="util.hibernate.PersistentEnumUserType">
+    <typedef name="ScopeEnumType" class="org.dslab.mdsd4sil.util.hibernate.PersistentEnumUserType">
         <param name="enumClass">org.dslab.mdsd4sil.metamodel.enterprisearchitect.datatypes.Scope</param>
     </typedef>
 </hibernate-mapping>

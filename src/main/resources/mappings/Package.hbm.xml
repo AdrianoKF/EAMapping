@@ -37,7 +37,7 @@
 
         <set name="objects" inverse="true">
             <key column="package_id"/>
-            <one-to-many class="ModelObject"/>
+            <one-to-many class="ModelEntity"/>
         </set>
         <set name="diagrams" inverse="true">
             <key column="package_id"/>
