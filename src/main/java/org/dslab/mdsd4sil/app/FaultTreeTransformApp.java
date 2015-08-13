@@ -10,11 +10,11 @@ import org.dslab.mdsd4sil.metamodel.emf.faulttrees.Gate;
 import org.dslab.mdsd4sil.metamodel.enterprisearchitect.Diagram;
 import org.dslab.mdsd4sil.metamodel.enterprisearchitect.EnterpriseArchitectModelPackage;
 import org.dslab.mdsd4sil.metamodel.enterprisearchitect.datatypes.DatatypesModelPackage;
+import org.dslab.mdsd4sil.metamodel.faulttrees.FaulttreesModelPackage;
 import org.dslab.mdsd4sil.util.hibernate.HibernateProxyRemover;
 import org.dslab.mdsd4sil.util.model.QvtTransformationExecutor;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.texo.converter.ModelEMFConverter;
-import org.lab.ds.mdsd4sil.metamodel.ft.FaulttreesModelPackage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,7 +49,7 @@ public class FaultTreeTransformApp {
             final Diagram d = dr.findByName("ValidFaultTree");
             final HibernateProxyRemover deproxy = new HibernateProxyRemover();
             final List<Object> objects = or.findByDiagram(d)
-                    .stream().map(o -> deproxy.replaceProxies(o)).collect(Collectors.toList());
+                    .stream().map(deproxy::replaceProxies).collect(Collectors.toList());
 
             // Forces registration of source and target metamodels in the global package registry
             FaultTreesPackage.eINSTANCE.getClass();
