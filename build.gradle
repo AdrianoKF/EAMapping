@@ -20,6 +20,7 @@ dependencies {
 
     compile project(':EAMetamodel.model')
     compile project(':FaultTreeMetamodel.model')
+    compile project(':utils')
 
     def hibernateVersion = "5.0.0.CR4"
     compile "org.hibernate:hibernate-core:$hibernateVersion"
@@ -50,11 +51,11 @@ dependencies {
         exclude group: 'org.jboss.weld.se'
     }
     testCompile 'org.reflections:reflections:0.9.10'  // v0.9.9-RC2 is broken, required by cdi-unit
-    testRuntime 'com.h2database:h2:1.4.187'
+    testRuntime 'com.h2database:h2:1.4.188'
     testCompile 'junit:junit:4.+'
 }
 
-mainClassName = 'app.Bootstrap'
+mainClassName = 'org.dslab.mdsd4sil.app.Bootstrap'
 
 test {
     systemProperties['persistenceUnit'] = 'testPersistenceUnit'
