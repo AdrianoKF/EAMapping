@@ -1,12 +1,12 @@
 package org.dslab.mdsd4sil.dao;
 
-import java.util.Collection;
-import java.util.List;
-
 import org.dslab.mdsd4sil.metamodel.enterprisearchitect.Connector;
 import org.dslab.mdsd4sil.metamodel.enterprisearchitect.Diagram;
 import org.dslab.mdsd4sil.metamodel.enterprisearchitect.ModelEntity;
 import org.dslab.mdsd4sil.metamodel.enterprisearchitect.datatypes.ConnectorType;
+
+import java.util.Collection;
+import java.util.List;
 
 public class ModelEntityRepository extends
         GenericHibernateRepository<ModelEntity, Integer> {
@@ -39,12 +39,12 @@ public class ModelEntityRepository extends
                 .getResultList();
         return result;
     }
-    
+
     public Collection<ModelEntity> findByDiagram(Diagram diagram) {
         final List<ModelEntity> result = em
                 .createQuery(
                         "SELECT o.object FROM Diagram d INNER JOIN d.objects o " +
-                        "WHERE d = :diagram",
+                                "WHERE d = :diagram",
                         ModelEntity.class)
                 .setParameter("diagram", diagram)
                 .getResultList();
