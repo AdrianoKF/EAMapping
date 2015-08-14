@@ -69,7 +69,7 @@ public class FaultTreeValidator {
             }
 
             if (seenEvents.contains(resultsIn)) {
-                log.info("Gate {} causes cycle with resulting event {}", g, resultsIn);
+                log.error("Gate {} causes cycle with resulting event {}", g, resultsIn);
                 ok = false;
                 break;
             }

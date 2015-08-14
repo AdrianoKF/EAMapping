@@ -46,7 +46,7 @@ public class FaultTreeTransformApp {
             em.getTransaction().begin();
             em.getTransaction().setRollbackOnly();
 
-            final Diagram d = dr.findByName("ValidFaultTree");
+            final Diagram d = dr.findByName("InvalidFaultTree");
             final HibernateProxyRemover deproxy = new HibernateProxyRemover();
             final List<Object> objects = or.findByDiagram(d)
                     .stream().map(deproxy::replaceProxies).collect(Collectors.toList());
@@ -56,38 +56,9 @@ public class FaultTreeTransformApp {
             EnterpriseArchitectPackage.eINSTANCE.getClass();
             FaulttreesModelPackage.INSTANCE.getClass();
             EnterpriseArchitectModelPackage.INSTANCE.getClass();
-            DatatypesModelPackage.INSTANCE.getClass();
 
             final ModelEMFConverter converter = new ModelEMFConverter();
             final List<EObject> eObjects = converter.convert(objects);
-
-            log.info("POJO: {}, EMF: {}" , objects.size(), eObjects.size());
-
-            objects.forEach(o -> {
-                if (o instanceof org.dslab.mdsd4sil.metamodel.enterprisearchitect.ModelEntity) {
-                    final org.dslab.mdsd4sil.metamodel.enterprisearchitect.ModelEntity entity = (org.dslab.mdsd4sil.metamodel.enterprisearchitect.ModelEntity) o;
-                    log.info(entity.getName());
-                    log.info("+--> INCOMING");
-                    entity.getIncomingConnectors().forEach(c -> log.info("|  {}", c.toString()));
-
-                    log.info("'--> OUTGOING");
-                    entity.getOutgoingConnectors().forEach(c -> log.info("|  {}", c.toString()));
-                }
-                log.info("---");
-            });
-
-            eObjects.forEach(o -> {
-                if (EnterpriseArchitectPackage.eINSTANCE.getModelEntity().isInstance(o)) {
-                    final ModelEntity entity = (ModelEntity) o;
-                    log.info(entity.getName());
-                    log.info("+--> INCOMING");
-                    entity.getIncomingConnectors().forEach(c -> log.info("|  {}", c.toString()));
-
-                    log.info("'--> OUTGOING");
-                    entity.getOutgoingConnectors().forEach(c -> log.info("|  {}", c.toString()));
-                }
-                log.info("---");
-            });
 
             try {
                 final File transformation = new File("../QvtFTA/transforms/ea2fta.qvto");
