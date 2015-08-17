@@ -30,11 +30,11 @@ public interface GenericRepository<TEntity, TId extends Serializable> {
     public TEntity get(TId id);
 
     /**
-     * Delete a persistent entity.
+     * Delete the persistent entity with the given identifier.
      *
-     * @param entity
+     * @param id
      */
-    public void delete(TEntity entity);
+    public void delete(TId id);
 
     /**
      * Persists an entity in this repository.
