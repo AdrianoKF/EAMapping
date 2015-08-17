@@ -32,7 +32,8 @@ public class PackageRepository extends GenericJdbcRepository<Package, Integer> {
 
     @Override
     protected String getDeleteQuery() {
-        return null;
+        return "DELETE FROM t_package\n" +
+                "WHERE package_id = ?";
     }
 
     @Override

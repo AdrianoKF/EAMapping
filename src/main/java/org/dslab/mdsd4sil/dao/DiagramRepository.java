@@ -26,7 +26,8 @@ public class DiagramRepository extends GenericJdbcRepository<Diagram, Integer> {
 
     @Override
     protected String getDeleteQuery() {
-        return null;
+        return "DELETE FROM t_diagram\n" +
+                "WHERE diagram_id = ?";
     }
 
     public Diagram findByName(String name) {
