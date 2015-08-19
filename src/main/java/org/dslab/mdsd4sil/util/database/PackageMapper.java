@@ -18,12 +18,17 @@ public final class PackageMapper extends ResultSetMapper<Package> {
     }
 
     @Override
-    protected void buildFieldMapping() throws NoSuchMethodException {
-        columnSetter.put("package_id", clazz.getMethod("setPackageId", int.class));
-        columnSetter.put("name", clazz.getMethod("setName", String.class));
-        columnSetter.put("notes", clazz.getMethod("setNotes", String.class));
-        columnSetter.put("version", clazz.getMethod("setVersion", String.class));
-        columnSetter.put("namespace", clazz.getMethod("setNamespace", String.class));
+    public String getTableName() {
+        return "t_package";
+    }
+
+    @Override
+    protected void buildColumnToFieldMapping() {
+        columnsToFields.put("package_id", makeIntFieldEntry("packageId"));
+        columnsToFields.put("name", makeStringFieldEntry("name"));
+        columnsToFields.put("notes", makeStringFieldEntry("notes"));
+        columnsToFields.put("version", makeStringFieldEntry("version"));
+        columnsToFields.put("namespace", makeStringFieldEntry("namespace"));
     }
 
     @Override

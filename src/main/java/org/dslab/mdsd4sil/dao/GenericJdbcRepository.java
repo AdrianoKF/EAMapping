@@ -55,6 +55,16 @@ public abstract class GenericJdbcRepository<TEntity, TId extends Serializable> i
     }
 
     @Override
+    public void saveOrUpdate(TEntity entity) {
+        try (final PreparedStatement stmt = getEntityMapper().prepareInsertQuery(entity, jdbc)) {
+            System.out.println("Would execute " + stmt);
+            final int affectedLines = stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public void delete(TId id) {
         try (final PreparedStatement sql = jdbc.prepareStatement(getDeleteQuery())) {
             sql.setObject(1, id);

@@ -13,12 +13,17 @@ public class DiagramMapper extends ResultSetMapper<Diagram> {
     }
 
     @Override
-    protected void buildFieldMapping() throws NoSuchMethodException {
-        columnSetter.put("diagram_id", clazz.getMethod("setDiagramId", int.class));
-        columnSetter.put("name", clazz.getMethod("setName", String.class));
-        columnSetter.put("notes", clazz.getMethod("setNotes", String.class));
-        columnSetter.put("stereotype", clazz.getMethod("setStereotype", String.class));
-        columnSetter.put("diagram_type", clazz.getMethod("setDiagramType", String.class));
+    public String getTableName() {
+        return "t_diagram";
+    }
+
+    @Override
+    protected void buildColumnToFieldMapping() {
+        columnsToFields.put("diagram_id", makeIntFieldEntry("diagramId"));
+        columnsToFields.put("name", makeStringFieldEntry("name"));
+        columnsToFields.put("notes", makeStringFieldEntry("notes"));
+        columnsToFields.put("stereotype", makeStringFieldEntry("stereotype"));
+        columnsToFields.put("diagram_type", makeStringFieldEntry("diagramType"));
     }
 
     @Override

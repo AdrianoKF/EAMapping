@@ -47,11 +47,6 @@ public class ModelEntityRepository extends GenericJdbcRepository<ModelEntity, In
         }
     }
 
-    @Override
-    public void saveOrUpdate(ModelEntity modelEntity) {
-
-    }
-
     public List<Connector> findConnectorsByStereotype(String stereotype) {
         return null;
     }
