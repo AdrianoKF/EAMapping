@@ -10,7 +10,7 @@ import java.lang.reflect.Method;
 /**
  * Created by Adriano on 21.08.2015.
  */
-public class OneToOneReferenceMapping<TColumn, TField> extends ColumnMapping<TColumn, TField> {
+public final class OneToOneReferenceMapping<TColumn, TField> extends ColumnMapping<TColumn, TField> {
     public OneToOneReferenceMapping(String columnName, String fieldName, Class<TColumn> columnClass, Class<TField> fieldClass) {
         super(columnName, fieldName, columnClass, fieldClass);
 
