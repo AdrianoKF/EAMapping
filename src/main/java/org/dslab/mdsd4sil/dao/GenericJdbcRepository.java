@@ -1,9 +1,11 @@
 package org.dslab.mdsd4sil.dao;
 
+import org.dslab.mdsd4sil.util.database.MapperRegistry;
 import org.dslab.mdsd4sil.util.database.ResultSetMapper;
 
 import javax.inject.Inject;
 import java.io.Serializable;
+import java.lang.reflect.ParameterizedType;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,14 +19,19 @@ import java.util.List;
 public abstract class GenericJdbcRepository<TEntity, TId extends Serializable> implements GenericRepository<TEntity, TId> {
     @Inject protected Connection jdbc;
 
-    protected abstract ResultSetMapper<TEntity> getEntityMapper();
+    protected final Class<TEntity> entityClass;
 
-    protected abstract String getBaseQuery();
+    public GenericJdbcRepository() {
+        entityClass = (Class<TEntity>) ((ParameterizedType) getClass()
+                .getGenericSuperclass()).getActualTypeArguments()[0];
+    }
 
-    protected abstract String getDeleteQuery();
+    public ResultSetMapper<TEntity> getEntityMapper() {
+        return MapperRegistry.INSTANCE.getMapper(entityClass);
+    }
 
     public TEntity get(TId id) {
-        final String query = getBaseQuery() + "\nAND " + getEntityMapper().getIdColumn() + " = ?";
+        final String query = getEntityMapper().getSelectQuery() + "\nAND " + getEntityMapper().getIdColumn() + " = ?";
         try (final PreparedStatement sql = jdbc.prepareStatement(query)) {
             sql.setMaxRows(1);
             sql.setObject(1, id);
@@ -46,7 +53,7 @@ public abstract class GenericJdbcRepository<TEntity, TId extends Serializable> i
 
     @Override
     public List<TEntity> getAll() {
-        try (final PreparedStatement sql = jdbc.prepareStatement(getBaseQuery())) {
+        try (final PreparedStatement sql = getEntityMapper().prepareSelectQuery(jdbc)) {
             return executeStatement(sql);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -66,18 +73,16 @@ public abstract class GenericJdbcRepository<TEntity, TId extends Serializable> i
 
     @Override
     public void delete(TId id) {
-        try (final PreparedStatement sql = jdbc.prepareStatement(getDeleteQuery())) {
-            sql.setObject(1, id);
+        try (final PreparedStatement sql = getEntityMapper().prepareDeleteQuery(id, jdbc)) {
             System.out.println("sql = " + sql);
-
             final int affectedRows = sql.executeUpdate();
-
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     protected List<TEntity> executeStatement(PreparedStatement sql) throws SQLException {
+        System.out.println("sql = " + sql);
         final ResultSet rs = sql.executeQuery();
         final List<TEntity> result = new ArrayList<>();
 
