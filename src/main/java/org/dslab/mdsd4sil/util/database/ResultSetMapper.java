@@ -1,7 +1,9 @@
 package org.dslab.mdsd4sil.util.database;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.tuple.Pair;
+import org.dslab.mdsd4sil.util.database.mapping.ColumnMapping;
+import org.dslab.mdsd4sil.util.database.mapping.ColumnMappingBuilder;
+import org.eclipse.emf.common.util.Enumerator;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -20,68 +22,45 @@ import static java.util.stream.Collectors.toSet;
 public abstract class ResultSetMapper<T> {
     protected final Class<T> clazz;
 
-    protected SortedMap<String, Pair<String, Class>> columnsToFields = new TreeMap<>();
-
+    protected SortedMap<String, ColumnMapping> columnMappings = new TreeMap<>();
     protected Map<String, Method> columnSetter = new HashMap<>();
     protected Map<String, Method> columnGetter = new HashMap<>();
-    protected Map<String, Function<?, ?>> columnToFieldMapper = new HashMap<>();
-    protected Map<String, Function<?, ?>> fieldToColumnMapper = new HashMap<>();
 
     public ResultSetMapper() {
         clazz = (Class<T>) ((ParameterizedType) getClass()
                 .getGenericSuperclass()).getActualTypeArguments()[0];
 
+        MapperRegistry.INSTANCE.registerMapper(clazz, this);
+    }
+
+    public void initialize() {
         try {
-            buildColumnToFieldMapping();
+            buildColumnMapping();
             cacheSetterMethods();
             cacheGetterMethods();
-            buildColumnMapper();
-            buildFieldMapper();
         } catch (NoSuchMethodException e) {
+            e.printStackTrace();
             throw new ExceptionInInitializerError(
                     "Could not build column mapping for entity " + clazz.getSimpleName() +
                             "\nReason: Could not find setter method " + e.getMessage());
         }
     }
 
-    protected abstract void buildColumnToFieldMapping();
+    protected abstract void buildColumnMapping();
 
-    protected T createInstance() {
-        try {
-            return clazz.newInstance();
-        } catch (Exception e) {
-            throw new ExceptionInInitializerError("Could not create new entity instance: " + e);
-        }
-    }
-
-    protected void buildColumnMapper() {
-    }
-
-    protected void buildFieldMapper() {
-
-    }
-
-    protected static Pair<String, Class> makeStringFieldEntry(String fieldName) {
-        return Pair.of(fieldName, String.class);
-    }
-
-    protected static Pair<String, Class> makeIntFieldEntry(String fieldName) {
-        return Pair.of(fieldName, int.class);
-    }
+    public abstract T createInstance();
 
     private void cacheMethods(Map<String, Method> cache, UnaryOperator<String> nameMapping, boolean takesParameters) throws NoSuchMethodException {
-        for (String column : columnsToFields.keySet()) {
-            final Pair<String, Class> entry = columnsToFields.get(column);
-            final String fieldName = entry.getLeft();
+        for (ColumnMapping mapping : columnMappings.values()) {
+            final String columnName = mapping.getColumnName();
+            final String fieldName = mapping.getFieldName();
             final String methodName = nameMapping.apply(fieldName);
-            final Class fieldType = entry.getRight();
-
-            System.out.printf("Adding %s to %s\n", methodName, cache);
+            final Class fieldType = mapping.getFieldClass();
 
             if (takesParameters) {
-                cache.put(column, clazz.getMethod(methodName, fieldType));
+                cache.put(columnName, clazz.getMethod(methodName, fieldType));
             } else {
-                cache.put(column, clazz.getMethod(methodName, new Class[]{}));
+                cache.put(columnName, clazz.getMethod(methodName, new Class[]{}));
             }
         }
     }
@@ -94,37 +73,6 @@ public abstract class ResultSetMapper<T> {
         cacheMethods(columnGetter, s -> "get" + StringUtils.capitalize(s), false);
     }
 
-    public PreparedStatement prepareInsertQuery(T entity, Connection conn) throws SQLException {
-        final Set<String> columns = columnsToFields.keySet().stream().filter(col -> !getIdColumn().equals(col)).collect(toSet());
-
-        final String colNames = columns.stream().collect(joining(", "));
-        final String placeholders = columns.stream().map(s -> "?").collect(joining(", "));
-
-        final String query = String.format("INSERT INTO %s (%s) VALUES (%s)", getTableName(), colNames, placeholders);
-        final PreparedStatement stmt = conn.prepareStatement(query);
-        int colIdx = 0;
-        for (String colName : columns) {
-            ++colIdx;
-            final Method getter = columnGetter.get(colName);
-
-            try {
-                Object fieldValue = getter.invoke(entity);
-                if (fieldToColumnMapper.containsKey(colName)) {
-                    final Function f = fieldToColumnMapper.get(colName);
-                    fieldValue = f.apply(fieldValue);
-                }
-
-                stmt.setObject(colIdx, fieldValue);
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            }
-        }
-
-        return stmt;
-    }
-
     public T extractEntity(ResultSet rs) {
         try {
             final T entity = createInstance();
@@ -135,7 +83,7 @@ public abstract class ResultSetMapper<T> {
                 final Method setter = columnSetter.get(columnName);
 
                 if (setter != null) {
-                    final Function mapper = columnToFieldMapper.get(columnName);
+                    final Function mapper = columnMappings.get(columnName).getColumnToField();
                     Object mappedValue;
                     if (mapper != null) {
                         mappedValue = mapper.apply(rs.getObject(i));
@@ -159,5 +107,75 @@ public abstract class ResultSetMapper<T> {
 
     public abstract String getTableName();
 
+    public PreparedStatement prepareSelectQuery(Connection conn) throws SQLException {
+        return conn.prepareStatement(getSelectQuery());
+    }
+
+    public String getSelectQuery() {
+        final String colNames = columnMappings.keySet().stream().collect(joining(", "));
+
+        return "SELECT " + colNames + " FROM " + getTableName() + " WHERE 1 = 1";
+    }
+
+    public PreparedStatement prepareUpdateQuery(T entity, Connection conn) throws SQLException {
+        final Set<String> columns = columnMappings.keySet().stream().filter(col -> !getIdColumn().equals(col)).collect(toSet());
+
+        final String colNames = columns.stream().collect(joining(", "));
+        final String placeholders = columns.stream().map(s -> "?").collect(joining(", "));
+
+        final String query = String.format("UPDATE %s SET ", getTableName(), colNames, placeholders);
+        int colIdx = 0;
+        for (String colName : columns) {
+            // TODO: Add "col = ?" pairs to query
+        }
+        final PreparedStatement stmt = conn.prepareStatement(query);
+        // TODO: Add values to prepared statement
+
+        return stmt;
+    }
+
+    public PreparedStatement prepareInsertQuery(T entity, Connection conn) throws SQLException {
+        final Set<String> columns = columnMappings.keySet().stream().filter(col -> !getIdColumn().equals(col)).collect(toSet());
+
+        final String colNames = columns.stream().collect(joining(", "));
+        final String placeholders = columns.stream().map(s -> "?").collect(joining(", "));
+
+        final String query = String.format("INSERT INTO %s (%s) VALUES (%s)", getTableName(), colNames, placeholders);
+        final PreparedStatement stmt = conn.prepareStatement(query);
+        int colIdx = 0;
+        for (String colName : columns) {
+            ++colIdx;
+            final Method getter = columnGetter.get(colName);
+
+            try {
+                Object fieldValue = getter.invoke(entity);
+                final Function f = columnMappings.get(colName).getFieldToColumn();
+                if (f != null) {
+                    fieldValue = f.apply(fieldValue);
+                }
+
+                stmt.setObject(colIdx, fieldValue);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return stmt;
+    }
+
+    // TODO: Fix ID column type
+    public PreparedStatement prepareDeleteQuery(Object objectId, Connection conn) throws SQLException {
+        final String query = String.format("DELETE FROM %s WHERE %s = ?",
+                getTableName(), getIdColumn());
+        final PreparedStatement stmt = conn.prepareStatement(query);
+        stmt.setObject(1, objectId);
+
+        return stmt;
+    }
+
     public abstract String getIdColumn();
+
+    public abstract String getIdField();
 }
