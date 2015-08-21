@@ -20,6 +20,18 @@ public final class JdbcConnectionFactory {
     private final ComboPooledDataSource ds;
 
     public JdbcConnectionFactory() {
+        // Initialize entity mappers, TODO: Move this to its appropriate place
+        final ResultSetMapper[] mappers = {
+                new ModelEntityMapper(),
+                new DiagramMapper(),
+                new PackageMapper(),
+                new ConnectorMapper()
+        };
+        for (ResultSetMapper mapper : mappers) {
+            mapper.initialize();
+        }
+
+
         ds = new ComboPooledDataSource();
         try {
             ds.setDriverClass("org.postgresql.Driver");
