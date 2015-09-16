@@ -2,9 +2,9 @@ package org.dslab.mdsd4sil.util.database;
 
 import org.apache.commons.lang3.StringUtils;
 import org.dslab.mdsd4sil.util.database.mapping.ColumnMapping;
-import org.dslab.mdsd4sil.util.database.mapping.ColumnMappingBuilder;
-import org.eclipse.emf.common.util.Enumerator;
 
+import javax.inject.Singleton;
+import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
@@ -19,6 +19,7 @@ import static java.util.stream.Collectors.toSet;
 /**
  * Created by Adriano on 17.08.2015.
  */
+@Singleton
 public abstract class ResultSetMapper<T> {
     protected final Class<T> clazz;
 
@@ -166,7 +167,7 @@ public abstract class ResultSetMapper<T> {
     }
 
     // TODO: Fix ID column type
-    public PreparedStatement prepareDeleteQuery(Object objectId, Connection conn) throws SQLException {
+    public PreparedStatement prepareDeleteQuery(Serializable objectId, Connection conn) throws SQLException {
         final String query = String.format("DELETE FROM %s WHERE %s = ?",
                 getTableName(), getIdColumn());
         final PreparedStatement stmt = conn.prepareStatement(query);
