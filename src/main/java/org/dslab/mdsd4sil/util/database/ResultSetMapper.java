@@ -2,6 +2,8 @@ package org.dslab.mdsd4sil.util.database;
 
 import org.apache.commons.lang3.StringUtils;
 import org.dslab.mdsd4sil.util.database.mapping.ColumnMapping;
+import org.dslab.mdsd4sil.util.database.mapping.OneToManyReferenceMapping;
+import org.eclipse.emf.common.util.EList;
 
 import javax.inject.Singleton;
 import java.io.Serializable;
@@ -26,6 +28,7 @@ public abstract class ResultSetMapper<T> {
     protected SortedMap<String, ColumnMapping> columnMappings = new TreeMap<>();
     protected Map<String, Method> columnSetter = new HashMap<>();
     protected Map<String, Method> columnGetter = new HashMap<>();
+    protected Set<OneToManyReferenceMapping> oneToManyMappings = new HashSet<>();
 
     public ResultSetMapper() {
         clazz = (Class<T>) ((ParameterizedType) getClass()
@@ -59,9 +62,11 @@ public abstract class ResultSetMapper<T> {
             final Class fieldType = mapping.getFieldClass();
 
             if (takesParameters) {
-                cache.put(columnName, clazz.getMethod(methodName, fieldType));
+                final Method setter = clazz.getMethod(methodName, fieldType);
+                cache.put(columnName, setter);
             } else {
-                cache.put(columnName, clazz.getMethod(methodName, new Class[]{}));
+                final Method getter = clazz.getMethod(methodName, new Class[]{});
+                cache.put(columnName, getter);
             }
         }
     }
@@ -74,12 +79,12 @@ public abstract class ResultSetMapper<T> {
         cacheMethods(columnGetter, s -> "get" + StringUtils.capitalize(s), false);
     }
 
-    public T extractEntity(ResultSet rs) {
+    public T extractEntity(ResultSet rs) throws Exception {
         try {
             final T entity = createInstance();
             final ResultSetMetaData metadata = rs.getMetaData();
 
-            for (int i = 1; i < metadata.getColumnCount(); ++i) {
+            for (int i = 1; i <= metadata.getColumnCount(); ++i) {
                 final String columnName = metadata.getColumnName(i);
                 final Method setter = columnSetter.get(columnName);
 
@@ -92,7 +97,40 @@ public abstract class ResultSetMapper<T> {
                         mappedValue = rs.getObject(i);
                     }
                     setter.invoke(entity, mappedValue);
+                } else {
+                    throw new Exception("No setter for column " + columnName);
                 }
+            }
+
+            // Populate One-to-many relationships
+            final Connection conn = rs.getStatement().getConnection();
+            final Object id = columnGetter.get(getIdColumn()).invoke(entity);
+
+            for (final OneToManyReferenceMapping mapping : oneToManyMappings) {
+                final Set otherEntities = new HashSet<>();
+                final ResultSetMapper oppositeMapper = MapperRegistry.INSTANCE.getMapper(mapping.getFieldClass());
+                final String selectQuery = oppositeMapper.getSelectQuery() + " AND " + mapping.getOppositeEndColumn() + " = ?";
+
+                try (final PreparedStatement sql = conn.prepareStatement(selectQuery)) {
+                    sql.setObject(1, id);
+                    try (final ResultSet otherRs = sql.executeQuery()) {
+                        while (otherRs.next()) {
+                            otherEntities.add(oppositeMapper.extractEntity(otherRs));
+                        }
+                    }
+                }
+
+                // FIXME: Yikes.
+                final String fieldName = mapping.getFieldName();
+                try {
+                    final Method getter = clazz.getMethod("get" + StringUtils.capitalize(fieldName), new Class[]{});
+                    EList<?> list = (EList<?>) getter.invoke(entity);
+                    list.addAll(otherEntities);
+                } catch (NoSuchMethodException e) {
+                    e.printStackTrace();
+                }
+
+                System.out.println(mapping.getFieldName() + " -- mapped to -- " + otherEntities);
             }
 
             return entity;
@@ -113,9 +151,11 @@ public abstract class ResultSetMapper<T> {
     }
 
     public String getSelectQuery() {
-        final String colNames = columnMappings.keySet().stream().collect(joining(", "));
+        return "SELECT " + getColumnList("") + " FROM " + getTableName() + " WHERE 1 = 1";
+    }
 
-        return "SELECT " + colNames + " FROM " + getTableName() + " WHERE 1 = 1";
+    public String getColumnList(String prefix) {
+        return columnMappings.keySet().stream().map(s -> StringUtils.isNotEmpty(prefix) ? prefix + "." + s : s).collect(joining(", "));
     }
 
     public PreparedStatement prepareUpdateQuery(T entity, Connection conn) throws SQLException {
