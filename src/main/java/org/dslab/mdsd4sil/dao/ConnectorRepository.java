@@ -11,7 +11,6 @@ import java.util.List;
  * Created by Adriano on 19.08.2015.
  */
 public final class ConnectorRepository extends GenericJdbcRepository<Connector, Integer> {
-
     public List<Connector> getIncomingConnectors(ModelEntity entity) {
         final String query = getEntityMapper().getSelectQuery() + "\nAND end_object_id = ?";
         try (final PreparedStatement sql = jdbc.prepareStatement(query)) {
