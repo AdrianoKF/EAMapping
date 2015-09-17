@@ -86,9 +86,13 @@ public abstract class GenericJdbcRepository<TEntity, TId extends Serializable> i
         final ResultSet rs = sql.executeQuery();
         final List<TEntity> result = new ArrayList<>();
 
-        while (rs.next()) {
-            final TEntity entity = getEntityMapper().extractEntity(rs);
-            result.add(entity);
+        try {
+            while (rs.next()) {
+                final TEntity entity = getEntityMapper().extractEntity(rs);
+                result.add(entity);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return result;
     }
