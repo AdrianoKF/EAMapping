@@ -3,6 +3,7 @@ package org.dslab.mdsd4sil.util.database;
 import org.dslab.mdsd4sil.metamodel.emf.enterprisearchitect.Diagram;
 import org.dslab.mdsd4sil.metamodel.emf.enterprisearchitect.EnterpriseArchitectFactory;
 import org.dslab.mdsd4sil.util.database.mapping.BasicColumnMapping;
+import org.dslab.mdsd4sil.util.database.mapping.StringColumnMapping;
 
 /**
  * Created by Adriano on 17.08.2015.
@@ -21,10 +22,10 @@ public final class DiagramMapper extends ResultSetMapper<Diagram> {
     @Override
     protected void buildColumnMapping() {
         columnMappings.put("diagram_id", new BasicColumnMapping<>("diagram_id", "diagramId", Integer.class));
-        columnMappings.put("name", new BasicColumnMapping<>("name", String.class));
-        columnMappings.put("notes", new BasicColumnMapping<>("notes", String.class));
-        columnMappings.put("stereotype", new BasicColumnMapping<>("stereotype", String.class));
-        columnMappings.put("diagram_type", new BasicColumnMapping<>("diagram_type", "diagramType", String.class));
+        columnMappings.put("name", new StringColumnMapping("name"));
+        columnMappings.put("notes", new StringColumnMapping("notes"));
+        columnMappings.put("stereotype", new StringColumnMapping("stereotype"));
+        columnMappings.put("diagram_type", new StringColumnMapping("diagram_type", "diagramType"));
     }
 
     @Override

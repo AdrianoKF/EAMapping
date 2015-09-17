@@ -3,6 +3,7 @@ package org.dslab.mdsd4sil.util.database;
 import org.dslab.mdsd4sil.metamodel.emf.enterprisearchitect.EnterpriseArchitectFactory;
 import org.dslab.mdsd4sil.metamodel.emf.enterprisearchitect.Package;
 import org.dslab.mdsd4sil.util.database.mapping.BasicColumnMapping;
+import org.dslab.mdsd4sil.util.database.mapping.StringColumnMapping;
 
 /**
  * Created by Adriano on 17.08.2015.
@@ -26,10 +27,10 @@ public final class PackageMapper extends ResultSetMapper<Package> {
     @Override
     protected void buildColumnMapping() {
         columnMappings.put("package_id", new BasicColumnMapping<>("package_id", "packageId", Integer.class));
-        columnMappings.put("name", new BasicColumnMapping<>("name", String.class));
-        columnMappings.put("notes", new BasicColumnMapping<>("notes", String.class));
-        columnMappings.put("version", new BasicColumnMapping<>("version", String.class));
-        columnMappings.put("namespace", new BasicColumnMapping<>("namespace", String.class));
+        columnMappings.put("name", new StringColumnMapping("name"));
+        columnMappings.put("notes", new StringColumnMapping("notes"));
+        columnMappings.put("version", new StringColumnMapping("version"));
+        columnMappings.put("namespace", new StringColumnMapping("namespace"));
     }
 
     @Override
