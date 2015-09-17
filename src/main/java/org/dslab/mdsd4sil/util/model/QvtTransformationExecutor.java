@@ -7,10 +7,14 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.m2m.qvt.oml.*;
+import org.eclipse.m2m.qvt.oml.util.Log;
+import org.eclipse.m2m.qvt.oml.util.WriterLog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.io.OutputStreamWriter;
+import java.io.StringWriter;
 import java.util.List;
 
 /**
@@ -36,6 +40,10 @@ public class QvtTransformationExecutor {
         final TransformationExecutor executor = new TransformationExecutor(transformationUri);
         final ExecutionContextImpl execCtx = new ExecutionContextImpl();
 
+        final StringWriter outStream = new StringWriter();
+        final Log qvtoLog = new WriterLog(outStream);
+        execCtx.setLog(qvtoLog);
+
         try {
             final ExecutionDiagnostic result = executor.execute(execCtx, inModel, outModel);
 
@@ -53,6 +61,12 @@ public class QvtTransformationExecutor {
             }
         } finally {
             executor.cleanup();
+
+            if (log.isDebugEnabled()) {
+                log.debug("--- Begin Transformation output ---");
+                System.out.println(outStream.toString());
+                log.debug("---  End Transformation output  ---");
+            }
         }
 
         return outModel.getContents();
