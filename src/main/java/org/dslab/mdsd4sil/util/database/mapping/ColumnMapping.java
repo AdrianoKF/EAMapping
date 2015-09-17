@@ -5,12 +5,10 @@ import java.util.function.Function;
 /**
  * Created by Adriano on 21.08.2015.
  */
-public class ColumnMapping<TColumn, TField> {
-    protected Class<TColumn> columnClass;
-    protected Class<TField> fieldClass;
+public class ColumnMapping<TColumn, TField> extends AbstractFieldMapping<TField> {
+    protected final Class<TColumn> columnClass;
 
     protected final String columnName;
-    protected final String fieldName;
     protected Function<TColumn, TField> columnToField;
     protected Function<TField, TColumn> fieldToColumn;
 
@@ -20,10 +18,9 @@ public class ColumnMapping<TColumn, TField> {
 
     public ColumnMapping(String columnName, String fieldName, Class<TColumn> columnClass, Class<TField> fieldClass,
                          Function<TColumn, TField> columnToField, Function<TField, TColumn> fieldToColumn) {
+        super(fieldName, fieldClass);
         this.columnName = columnName;
-        this.fieldName = fieldName;
         this.columnClass = columnClass;
-        this.fieldClass = fieldClass;
         this.columnToField = columnToField;
         this.fieldToColumn = fieldToColumn;
     }
@@ -32,16 +29,8 @@ public class ColumnMapping<TColumn, TField> {
         return columnName;
     }
 
-    public String getFieldName() {
-        return fieldName;
-    }
-
     public Class<TColumn> getColumnClass() {
         return columnClass;
-    }
-
-    public Class<TField> getFieldClass() {
-        return fieldClass;
     }
 
     public Function<TColumn, TField> getColumnToField() {
